@@ -19,9 +19,9 @@ dist/
 .env.production.local
 .env*.local
 
-# Database files
-*.db
-Entities/*.db
+# Database files (uncomment to ignore)
+# *.db
+# Entities/*.db
 
 # Debug logs
 npm-debug.log*

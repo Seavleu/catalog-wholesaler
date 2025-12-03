@@ -89,9 +89,9 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
             </span>
           </div>
           
-          {product.colors?.length > 0 && (
+          {(product.colors?.length ?? 0) > 0 && (
             <div className="flex -space-x-1">
-              {product.colors.slice(0, 4).map((color, i) => (
+              {product.colors?.slice(0, 4).map((color, i) => (
                 <div 
                   key={i}
                   className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
@@ -99,9 +99,9 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
                   title={color}
                 />
               ))}
-              {product.colors.length > 4 && (
+              {(product.colors?.length ?? 0) > 4 && (
                 <div className="w-4 h-4 rounded-full border-2 border-white shadow-sm bg-gray-200 flex items-center justify-center">
-                  <span className="text-[8px] text-gray-600">+{product.colors.length - 4}</span>
+                  <span className="text-[8px] text-gray-600">+{(product.colors?.length ?? 0) - 4}</span>
                 </div>
               )}
             </div>

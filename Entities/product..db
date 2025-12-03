@@ -1,0 +1,90 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "brand": {
+      "type": "string",
+      "enum": [
+        "Nike",
+        "Adidas",
+        "Under Armour",
+        "Lululemon",
+        "The North Face",
+        "Patagonia",
+        "Kanken",
+        "Other"
+      ],
+      "description": "Brand name"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Men Sportswear",
+        "Women Sportswear",
+        "Football Jersey",
+        "Basketball Jersey",
+        "Backpacks",
+        "Bags"
+      ],
+      "description": "Product category"
+    },
+    "cover_image": {
+      "type": "string",
+      "description": "Main cover image URL"
+    },
+    "catalog_images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "All catalog/variant images"
+    },
+    "sizes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Available sizes (S, M, L, XL, etc.)"
+    },
+    "colors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Available colors"
+    },
+    "stock_status": {
+      "type": "string",
+      "enum": [
+        "in_stock",
+        "low_stock",
+        "out_of_stock",
+        "restocking"
+      ],
+      "default": "in_stock",
+      "description": "Stock availability status"
+    },
+    "restock_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Expected restock date if out of stock"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "brand",
+    "category"
+  ]
+}

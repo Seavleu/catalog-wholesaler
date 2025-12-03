@@ -1,0 +1,39 @@
+{
+  "name": "Review",
+  "type": "object",
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "Reference to the product"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Rating from 1 to 5 stars"
+    },
+    "text": {
+      "type": "string",
+      "description": "Review text"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "description": "Name of the reviewer"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending",
+      "description": "Review moderation status"
+    }
+  },
+  "required": [
+    "product_id",
+    "rating",
+    "text"
+  ]
+}

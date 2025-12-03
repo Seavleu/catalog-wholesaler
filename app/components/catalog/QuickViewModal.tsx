@@ -124,7 +124,7 @@ export default function QuickViewModal({
                 <div className="mt-5">
                   <p className="text-sm font-medium text-gray-500 mb-2">រូបភាពមើលមុន</p>
                   <div className="flex gap-2 flex-wrap">
-                    {product.catalog_images.slice(0, 5).map((img, i) => (
+                    {product.catalog_images?.slice(0, 5).map((img, i) => (
                       <div key={i} className="w-14 h-14 rounded-lg overflow-hidden border-2 border-gray-100 hover:border-gray-300 transition-colors">
                         <img src={img} alt="" className="w-full h-full object-cover" />
                       </div>

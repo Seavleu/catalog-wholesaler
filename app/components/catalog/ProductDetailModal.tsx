@@ -74,14 +74,14 @@ export default function ProductDetailModal({ product, open, onClose }: ProductDe
               </div>
             </div>
 
-            {product.sizes?.length > 0 && (
+            {(product.sizes?.length ?? 0) > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Ruler className="w-4 h-4" />
                   <span>Available Sizes</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size, i) => (
+                  {product.sizes?.map((size, i) => (
                     <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-700">
                       {size}
                     </Badge>
@@ -90,14 +90,14 @@ export default function ProductDetailModal({ product, open, onClose }: ProductDe
               </div>
             )}
 
-            {product.colors?.length > 0 && (
+            {(product.colors?.length ?? 0) > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Palette className="w-4 h-4" />
                   <span>Colors</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.colors.map((color, i) => (
+                  {product.colors?.map((color, i) => (
                     <div key={i} className="flex items-center gap-1.5 px-2 py-1 bg-gray-100 rounded-full">
                       <div 
                         className="w-3 h-3 rounded-full border border-gray-300"
@@ -120,11 +120,11 @@ export default function ProductDetailModal({ product, open, onClose }: ProductDe
         </div>
 
         {/* Additional Images */}
-        {product.additional_images?.length > 0 && (
+        {(product.additional_images?.length ?? 0) > 0 && (
           <div className="mt-4 space-y-2">
             <p className="text-sm text-gray-600">More Images</p>
             <div className="flex gap-2 overflow-x-auto pb-2">
-              {product.additional_images.map((img, i) => (
+              {product.additional_images?.map((img, i) => (
                 <img 
                   key={i}
                   src={img}

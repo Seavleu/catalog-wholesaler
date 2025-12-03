@@ -60,6 +60,8 @@ const STOCK_STATUS = [
   },
 ];
 
+type StockStatus = 'in_stock' | 'low_stock' | 'out_of_stock' | 'restocking';
+
 type ProductFormData = {
   name: string;
   brand: string;
@@ -68,7 +70,7 @@ type ProductFormData = {
   catalog_images: string[];
   sizes: string[];
   colors: string[];
-  stock_status: string;
+  stock_status: StockStatus;
   restock_date: string;
   notes: string;
   is_active: boolean;
@@ -416,7 +418,7 @@ export default function ProductForm({
               <Label>ស្ថានភាពស្តុក</Label>
               <Select
                 value={formData.stock_status || "in_stock"}
-                onValueChange={(v) => handleChange("stock_status", v)}
+                onValueChange={(v) => handleChange("stock_status", v as StockStatus)}
               >
                 <SelectTrigger className="h-12 text-base">
                   <SelectValue />

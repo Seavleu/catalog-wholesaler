@@ -23,7 +23,7 @@ export default function AppShell({ children }: AppShellProps) {
   useEffect(() => {
     base44.auth
       .me()
-      .then((u: UserType) => setUser(u))
+      .then((u) => setUser(u as UserType | null))
       .catch(() => setUser(null));
   }, []);
 
