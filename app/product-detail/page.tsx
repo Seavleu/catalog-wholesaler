@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import { base44, ProductEntity } from "@/app/api/base44Client";
 import RelatedProducts from "@/app/components/catalog/RelatedProducts";
 import ImageMagnifier from "@/app/components/catalog/ImageMagnifier";
 
-export default function ProductDetailPage() {
+function ProductDetailContent() {
   const searchParams = useSearchParams();
   const productId = searchParams.get("id");
 
@@ -255,5 +255,19 @@ export default function ProductDetailPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function ProductDetailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        </div>
+      }
+    >
+      <ProductDetailContent />
+    </Suspense>
   );
 }
