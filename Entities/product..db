@@ -23,12 +23,12 @@
     "category": {
       "type": "string",
       "enum": [
-        "Men Sportswear",
-        "Women Sportswear",
-        "Football Jersey",
-        "Basketball Jersey",
-        "Backpacks",
-        "Bags"
+        "សម្លៀកបំពាក់កីឡាបុរស",
+        "សម្លៀកបំពាក់កីឡានារី",
+        "អាវបាល់ទាត់",
+        "អាវបាល់បោះ",
+        "កាបូបស្ពាយ",
+        "កាបូប"
       ],
       "description": "Product category"
     },

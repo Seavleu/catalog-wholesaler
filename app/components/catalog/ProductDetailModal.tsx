@@ -123,7 +123,7 @@ export default function ProductDetailModal({ product, open, onClose }: ProductDe
         {(product.additional_images?.length ?? 0) > 0 && (
           <div className="mt-4 space-y-2">
             <p className="text-sm text-gray-600">More Images</p>
-            <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-2 overflow-x-auto pb-2">
               {product.additional_images?.map((img, i) => (
                 <img 
                   key={i}

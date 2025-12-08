@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  name           String
+  brand          String?
+  category       String?
+  cover_image    String?
+  catalog_images String[] @db.Text
+  sizes          String[] @db.Text
+  colors         String[] @db.Text
+  stock_status   String   @default("in_stock")
+  restock_date   DateTime?
+  notes          String?
+  is_active      Boolean  @default(true)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  @@map("products")
+}
+
+model ProductStage {
+  id             String   @id @default(uuid())
+  name           String
+  brand          String?
+  category       String?
+  cover_image    String?
+  catalog_images String[] @db.Text
+  notes          String?
+  is_active      Boolean  @default(true)
+  stock_status   String   @default("in_stock")
+  restock_date   DateTime?
+  created_date   DateTime?
+  updated_date   DateTime?
+  created_by_id  String?
+  created_by     String?
+  is_sample      Boolean?
+
+  @@map("product_stage")
+}
+
