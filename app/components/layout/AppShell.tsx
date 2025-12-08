@@ -31,42 +31,59 @@ export default function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen bg-white" dir="ltr">
-      {user && (
-        <div className="bg-gray-900 text-white">
-          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            <span className="text-gray-300 text-base whitespace-nowrap">
-              សួស្តី, {user.full_name || user.email}
-            </span>
-            <GlobalSearch />
-            <div className="flex items-center gap-5">
-              <Link
-                href="/profile"
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-base py-1"
-              >
-                <User className="w-5 h-5" />
-                គណនី
-              </Link>
-              {canManage && (
+      <div className="bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+          {user ? (
+            <>
+              <span className="text-gray-300 text-base whitespace-nowrap">
+                សួស្តី, {user.full_name || user.email}
+              </span>
+              <GlobalSearch />
+              <div className="flex items-center gap-5">
                 <Link
-                  href="/admin"
+                  href="/profile"
                   className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-base py-1"
                 >
-                  <Settings className="w-5 h-5" />
-                  {user.role === "manager" ? "គ្រប់គ្រងផលិតផល" : "គ្រប់គ្រង"}
+                  <User className="w-5 h-5" />
+                  គណនី
                 </Link>
-              )}
-              <button
-                type="button"
-                onClick={() => base44.auth.logout()}
-                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-base py-1"
+                {canManage && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-base py-1"
+                  >
+                    <Settings className="w-5 h-5" />
+                    {user.role === "manager"
+                      ? "គ្រប់គ្រងផលិតផល"
+                      : "គ្រប់គ្រង"}
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={() => base44.auth.logout()}
+                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-base py-1"
+                >
+                  <LogOut className="w-5 h-5" />
+                  ចាកចេញ
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="flex w-full items-center justify-between">
+              <span className="text-gray-300 text-base">
+                សូមចូលគណនីដើម្បីគ្រប់គ្រង
+              </span>
+              <Link
+                href="/login"
+                className="flex items-center gap-2 text-gray-900 bg-white px-4 py-2 rounded-lg text-base font-semibold hover:bg-gray-100 transition-colors"
               >
-                <LogOut className="w-5 h-5" />
-                ចាកចេញ
-              </button>
+                <User className="w-5 h-5" />
+                ចូលគណនី
+              </Link>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
 
       {children}
     </div>

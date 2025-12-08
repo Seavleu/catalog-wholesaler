@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 
-const CATEGORIES = ["All", "Men Sportswear", "Women Sportswear", "Football Jersey", "Basketball Jersey", "Backpacks", "Bags"];
+const CATEGORIES = ["All", "សម្លៀកបំពាក់កីឡាបុរស", "សម្លៀកបំពាក់កីឡានារី", "អាវបាល់ទាត់", "អាវបាល់បោះ", "កាបូបស្ពាយ", "កាបូប"];
 
 type CatalogFiltersProps = {
   searchQuery: string;

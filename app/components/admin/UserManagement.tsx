@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { base44, UserEntity } from "@/app/api/base44Client";
+import { base44 } from "@/app/api/base44Client";
+import { UserEntity } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

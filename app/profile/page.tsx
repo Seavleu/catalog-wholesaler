@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Phone, Mail, Shield, LogOut, Loader2 } from "lucide-react";
-import { base44, UserEntity } from "@/app/api/base44Client";
+import { base44 } from "@/app/api/base44Client";
+import { UserEntity } from "@/lib/types";
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "អ្នកគ្រប់គ្រង",

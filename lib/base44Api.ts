@@ -15,6 +15,9 @@ export type ProductEntity = {
   restock_date?: string | null;
   notes?: string;
   is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+  created_date?: string; // backward compat for mocks
 };
 
 export type ReviewEntity = {
