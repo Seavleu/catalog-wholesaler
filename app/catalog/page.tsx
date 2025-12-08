@@ -1,17 +1,24 @@
 import { ProductEntity } from "@/lib/base44Api";
 import CatalogClient from "@/app/components/catalog/CatalogClient";
-import { getServiceSupabase } from "@/lib/supabaseClient";
 
 async function getProducts(): Promise<ProductEntity[]> {
   try {
-    const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
-    if (error) throw error;
-    return (data || []) as ProductEntity[];
+    // Use the API route for consistency and to respect RLS policies
+    // In Next.js server components, we can use relative URLs
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+    
+    const res = await fetch(`${baseUrl}/api/products?active=true`, {
+      cache: "no-store", // Always fetch fresh data for catalog
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch products: ${res.statusText}`);
+    }
+    
+    const products = (await res.json()) as ProductEntity[];
+    // Filter active products (API should already filter, but double-check)
+    return products.filter((p) => p.is_active !== false);
   } catch (err) {
     console.error("Failed to fetch products from API:", err);
     return [];

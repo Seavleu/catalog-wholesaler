@@ -2,13 +2,21 @@ import { NextResponse } from "next/server";
 import { getServiceSupabase } from "@/lib/supabaseClient";
 import { ProductEntity } from "@/lib/base44Api";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const supabase = getServiceSupabase();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { searchParams } = new URL(req.url);
+    const activeOnly = searchParams.get("active") === "true";
+    
+    let query = supabase.from("products").select("*");
+    
+    // Filter by active status if requested (for public catalog access)
+    if (activeOnly) {
+      query = query.eq("is_active", true);
+    }
+    
+    const { data, error } = await query.order("created_at", { ascending: false });
+    
     if (error) throw error;
     return NextResponse.json((data || []) as ProductEntity[]);
   } catch (err: any) {
