@@ -72,7 +72,7 @@ export default function LoginPage() {
                 type="text"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder={isEmail(identifier) ? "admin@example.com" : "012345678"}
+                placeholder={isEmail(identifier) ? "admin@meymeysport.com" : "012345678"}
                 required
                 className="h-11 text-base"
               />

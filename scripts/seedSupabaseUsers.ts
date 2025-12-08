@@ -26,18 +26,23 @@ const randomPassword = () =>
 const requiredRoles: Array<{
   role: Role;
   full_name: string;
+  email?: string;
+  phone?: string;
 }> = [
   {
     role: "admin",
     full_name: "Admin User",
+    email: "admin@meymeysport.com",
   },
   {
     role: "manager",
     full_name: "Manager User",
+    email: "manager@meymeysport.com",
   },
   {
     role: "user",
     full_name: "Customer User",
+    phone: "+855123456789", // Placeholder - should be updated with real phone
   },
 ];
 
@@ -58,16 +63,39 @@ async function getUsersByRole(role: Role) {
 async function ensureRoleExists({
   role,
   full_name,
+  email,
+  phone,
 }: {
   role: Role;
   full_name: string;
+  email?: string;
+  phone?: string;
 }) {
   const existingUsers = await getUsersByRole(role);
 
   if (existingUsers.length > 0) {
-    // Role already exists, return existing users
+    // Role already exists, ensure profiles exist for all users
+    for (const user of existingUsers) {
+      const { error: profileError } = await admin
+        .from("profiles")
+        .upsert(
+          {
+            id: user.id,
+            full_name: (user.user_metadata?.full_name as string) || full_name,
+            role,
+          },
+          {
+            onConflict: "id",
+          }
+        );
+      if (profileError) {
+        console.warn(`Failed to ensure profile for existing ${role} user ${user.id}:`, profileError.message);
+      }
+    }
+    
     return existingUsers.map((u) => ({
       email: u.email || "N/A",
+      phone: u.phone || "N/A",
       full_name: (u.user_metadata?.full_name as string) || full_name,
       role,
       status: "exists",
@@ -76,34 +104,45 @@ async function ensureRoleExists({
   }
 
   // No user with this role exists, create one
-  const email = `${role}@example.com`;
   const password = randomPassword();
 
   const { data: newUser, error: createError } =
     await admin.auth.admin.createUser({
-      email,
+      ...(email ? { email } : {}),
+      ...(phone ? { phone, phone_confirm: true } : {}),
       password,
-      email_confirm: true,
+      email_confirm: email ? true : undefined,
       user_metadata: { full_name, role },
       app_metadata: { role },
     });
 
   if (createError) throw createError;
 
-  // Also ensure profile exists
-  const { error: profileError } = await admin.from("profiles").upsert({
-    id: newUser.user.id,
-    full_name,
-    role,
-  });
+  // Also ensure profile exists - use service role to bypass RLS
+  const { error: profileError } = await admin
+    .from("profiles")
+    .upsert(
+      {
+        id: newUser.user.id,
+        full_name,
+        role,
+      },
+      {
+        onConflict: "id",
+      }
+    );
 
   if (profileError) {
     console.warn(`Failed to create profile for ${role}:`, profileError.message);
+    console.warn("Profile error details:", JSON.stringify(profileError, null, 2));
+  } else {
+    console.log(`✓ Profile created/updated for ${role}: ${newUser.user.id}`);
   }
 
   return [
     {
-      email: newUser.user.email || email,
+      email: newUser.user.email || email || "N/A",
+      phone: newUser.user.phone || phone || "N/A",
       full_name,
       role,
       password,
@@ -117,8 +156,8 @@ async function run() {
   console.log("Checking database for required users...\n");
 
   const results = [];
-  for (const { role, full_name } of requiredRoles) {
-    const roleUsers = await ensureRoleExists({ role, full_name });
+  for (const { role, full_name, email, phone } of requiredRoles) {
+    const roleUsers = await ensureRoleExists({ role, full_name, email, phone });
     results.push(...roleUsers);
   }
 
@@ -126,6 +165,8 @@ async function run() {
   console.log("\nSeeding complete.");
   console.log("\nNote: Passwords are only shown for newly created users.");
   console.log("For existing users, use Supabase dashboard to reset passwords if needed.");
+  console.log("\n⚠️  IMPORTANT: Update the phone number for the 'user' role with a real phone number!");
+  console.log("   You can do this via the admin panel or Supabase dashboard.");
 }
 
 run().catch((err) => {

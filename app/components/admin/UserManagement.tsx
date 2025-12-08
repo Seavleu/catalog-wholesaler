@@ -48,6 +48,7 @@ import {
   Copy,
   CheckCircle2,
   Phone,
+  Mail,
 } from "lucide-react";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -64,6 +65,7 @@ const ROLE_COLORS: Record<string, string> = {
 
 type NewUserForm = {
   phone: string;
+  email: string;
   full_name: string;
   password: string;
   role: string;
@@ -75,6 +77,7 @@ export default function UserManagement() {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newUser, setNewUser] = useState<NewUserForm>({
     phone: "",
+    email: "",
     full_name: "",
     password: "",
     role: "user",
@@ -103,7 +106,8 @@ export default function UserManagement() {
   };
 
   const handleCreateUser = async () => {
-    if (!newUser.phone || !newUser.full_name) return;
+    if (!newUser.phone && !newUser.email) return;
+    if (!newUser.full_name) return;
 
     setIsCreating(true);
     try {
@@ -112,14 +116,16 @@ export default function UserManagement() {
         Math.random().toString(36).slice(-10) +
           Math.random().toString(36).slice(-4).toUpperCase();
       const user = await app.entities.User.create({
-        phone: newUser.phone,
+        phone: newUser.phone || undefined,
+        email: newUser.email || undefined,
         full_name: newUser.full_name,
         role: (newUser.role as UserEntity["role"]) || "user",
+        password,
       });
 
       setCreatedUser({ ...user, password });
       setShowCreateDialog(false);
-      setNewUser({ phone: "", full_name: "", password: "", role: "user" });
+      setNewUser({ phone: "", email: "", full_name: "", password: "", role: "user" });
       await loadUsers();
     } catch (err) {
       console.error("Failed to create user:", err);
@@ -266,7 +272,7 @@ export default function UserManagement() {
             <div>
               <Label className="text-base flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                លេខទូរស័ព្ទ *
+                លេខទូរស័ព្ទ (សម្រាប់អ្នកប្រើប្រាស់)
               </Label>
               <Input
                 type="tel"
@@ -279,6 +285,24 @@ export default function UserManagement() {
               />
               <p className="text-xs text-gray-500 mt-1">
                 បញ្ចូលលេខទូរស័ព្ទកម្ពុជា (ឧ. 012345678) - នឹងបម្លែងទៅជា E.164 ដោយស្វ័យប្រវត្តិ
+              </p>
+            </div>
+            <div>
+              <Label className="text-base flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                អ៊ីមែល (សម្រាប់ Admin/Manager)
+              </Label>
+              <Input
+                type="email"
+                value={newUser.email}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
+                placeholder="admin@meymeysport.com"
+                className="mt-2 h-12 text-base"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                បញ្ចូលអ៊ីមែលសម្រាប់អ្នកគ្រប់គ្រង (Admin/Manager)
               </p>
             </div>
             <div>
@@ -323,7 +347,7 @@ export default function UserManagement() {
             </Button>
             <Button
               onClick={handleCreateUser}
-              disabled={!newUser.phone || !newUser.full_name || isCreating}
+              disabled={(!newUser.phone && !newUser.email) || !newUser.full_name || isCreating}
               className="h-12 text-base px-6"
             >
               {isCreating && (
@@ -350,15 +374,28 @@ export default function UserManagement() {
                 សូមចម្លងព័ត៌មាននេះ ហើយផ្តល់ជូនអ្នកប្រើប្រាស់:
               </p>
               <div className="space-y-3 bg-white rounded-lg p-4 border border-yellow-300">
-                <div>
-                  <Label className="text-sm text-gray-600 flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    លេខទូរស័ព្ទ
-                  </Label>
-                  <p className="text-lg font-mono font-semibold text-gray-900 break-all">
-                    {createdUser?.phone}
-                  </p>
-                </div>
+                {createdUser?.phone && (
+                  <div>
+                    <Label className="text-sm text-gray-600 flex items-center gap-2">
+                      <Phone className="w-4 h-4" />
+                      លេខទូរស័ព្ទ
+                    </Label>
+                    <p className="text-lg font-mono font-semibold text-gray-900 break-all">
+                      {createdUser.phone}
+                    </p>
+                  </div>
+                )}
+                {createdUser?.email && (
+                  <div>
+                    <Label className="text-sm text-gray-600 flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      អ៊ីមែល
+                    </Label>
+                    <p className="text-lg font-mono font-semibold text-gray-900 break-all">
+                      {createdUser.email}
+                    </p>
+                  </div>
+                )}
                 <div>
                   <Label className="text-sm text-gray-600">ពាក្យសម្ងាត់</Label>
                   <p className="text-lg font-mono font-semibold text-gray-900">
