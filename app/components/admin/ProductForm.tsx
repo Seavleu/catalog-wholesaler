@@ -20,7 +20,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { X, Plus, Upload, Loader2, Calendar } from "lucide-react";
-import { base44, ProductEntity } from "@/app/api/base44Client";
+import { app, ProductEntity } from "@/app/api/appClient";
 
 const BRANDS = [
   "Nike",
@@ -159,7 +159,7 @@ export default function ProductForm({
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await app.integrations.Core.UploadFile({ file });
       handleChange("cover_image", file_url);
     } catch (err) {
       console.error("Upload failed:", err);
@@ -177,7 +177,7 @@ export default function ProductForm({
     const uploadedUrls: string[] = [];
     for (const file of files) {
       try {
-        const { file_url } = await base44.integrations.Core.UploadFile({
+        const { file_url } = await app.integrations.Core.UploadFile({
           file,
         });
         uploadedUrls.push(file_url);

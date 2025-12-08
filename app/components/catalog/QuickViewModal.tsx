@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, X, ChevronLeft, ChevronRight, ArrowRight, Layers } from 'lucide-react';
+import { Package, X, ChevronLeft, ChevronRight, ArrowRight, Layers, Camera, Send, MessageCircle } from 'lucide-react';
 
 type Product = {
   id: string;
@@ -139,10 +139,34 @@ export default function QuickViewModal({
               )}
             </div>
 
-            <Link href={`/product-detail?id=${product.id}`} className="block mt-6">
-              <Button className="w-full h-14 text-lg font-semibold gap-2 btn-press">
+            {/* Telegram Instructions */}
+            <div className="mt-5 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-3">
+              <div className="flex items-start gap-2.5">
+                <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Camera className="w-3.5 h-3.5 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-700 mb-2">
+                    ថតរូបផលិតផលនេះ និងផ្ញើមកកាន់ Telegram
+                  </p>
+                  <a
+                    href="https://t.me/your_telegram_username"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md font-medium text-xs transition-colors"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>Telegram</span>
+                    <Send className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <Link href={`/product-detail?id=${product.id}`} className="block mt-4">
+              <Button className="w-full h-12 text-base font-semibold gap-2">
                 មើលព័ត៌មានលម្អិត
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </div>

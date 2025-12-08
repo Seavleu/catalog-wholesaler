@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Phone, Mail, Shield, LogOut, Loader2 } from "lucide-react";
-import { base44 } from "@/app/api/base44Client";
+import { User, Phone, Mail, Shield, LogOut, Loader2, ShoppingBag, ArrowRight } from "lucide-react";
+import { app } from "@/app/api/appClient";
 import { UserEntity } from "@/lib/types";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -27,7 +28,7 @@ export default function ProfilePage() {
   useEffect(() => {
     async function loadUser() {
       try {
-        const me = await base44.auth.me();
+        const me = await app.auth.me();
         setUser(me);
       } catch (err) {
         console.error("Failed to load user:", err);
@@ -118,11 +119,23 @@ export default function ProfilePage() {
           </div>
 
           {/* Actions */}
-          <div className="pt-4 border-t">
+          <div className="pt-4 border-t space-y-3">
+            {/* Catalog Navigation */}
+            <Link href="/catalog" className="block">
+              <Button
+                className="w-full h-12 gap-2 bg-gray-900 hover:bg-gray-800 text-white"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                មើលកាតាឡុកផលិតផល
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+
+            {/* Logout */}
             <Button
               variant="outline"
               className="w-full h-12 gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-              onClick={() => base44.auth.logout()}
+              onClick={() => app.auth.logout()}
             >
               <LogOut className="w-5 h-5" />
               ចាកចេញ

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { base44 } from "@/app/api/base44Client";
+import { app } from "@/app/api/appClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,12 +27,12 @@ export default function LoginPage() {
     try {
       if (isEmail(identifier)) {
         // Admin login with email
-        await base44.auth.login({ email: identifier, password });
+        await app.auth.login({ email: identifier, password });
       } else {
         // User login with phone
-        await base44.auth.login({ phone: identifier, password });
+        await app.auth.login({ phone: identifier, password });
       }
-      router.push("/profile");
+      router.push("/catalog");
       router.refresh();
     } catch (err: any) {
       setError(err?.message || "Failed to login");

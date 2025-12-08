@@ -1,24 +1,14 @@
 "use client";
 
-import {
-  BASE44_APP_ID,
-  BASE44_API_KEY,
-  BASE44_BASE_URL,
-  ProductEntity,
-  ReviewEntity,
-  fetchProductEntities,
-  updateProductEntity,
-  fetchReviewEntities,
-  updateReviewEntity,
-} from "@/lib/base44Api";
+import { ProductEntity } from "@/lib/types";
 import { getBrowserSupabase } from "@/lib/supabaseClient";
 import { UserEntity } from "@/lib/types";
 import { normalizePhoneToE164 } from "@/lib/phoneUtils";
 
 type UserCreatePayload = Partial<UserEntity> & { password?: string };
 
-// Base44 client that mirrors the SDK patterns used in components
-export const base44 = {
+// Application API client for products, users, and authentication
+export const app = {
   auth: {
     login: async ({
       email,
@@ -138,44 +128,6 @@ export const base44 = {
         }
       },
     },
-    Review: {
-      list: async (sort?: string): Promise<ReviewEntity[]> => {
-        const reviews = await fetchReviewEntities();
-        if (sort === "-created_date") {
-          return reviews.reverse();
-        }
-        return reviews;
-      },
-      create: async (data: Partial<ReviewEntity>): Promise<ReviewEntity> => {
-        const response = await fetch(
-          `${BASE44_BASE_URL}/${BASE44_APP_ID}/entities/Review`,
-          {
-            method: "POST",
-            headers: {
-              api_key: BASE44_API_KEY,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        if (!response.ok) throw new Error("Failed to create review");
-        return response.json();
-      },
-      update: updateReviewEntity,
-      delete: async (id: string): Promise<void> => {
-        const response = await fetch(
-          `${BASE44_BASE_URL}/${BASE44_APP_ID}/entities/Review/${id}`,
-          {
-            method: "DELETE",
-            headers: {
-              api_key: BASE44_API_KEY,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!response.ok) throw new Error("Failed to delete review");
-      },
-    },
     User: {
       list: async (sort?: string): Promise<UserEntity[]> => {
         const url = `/api/users${sort ? `?sort=${encodeURIComponent(sort)}` : ""}`;
@@ -233,4 +185,6 @@ export const base44 = {
   },
 };
 
-export type { ProductEntity, ReviewEntity };
+// Re-export ProductEntity for convenience
+export type { ProductEntity } from "@/lib/types";
+

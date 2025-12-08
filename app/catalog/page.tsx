@@ -1,4 +1,4 @@
-import { ProductEntity } from "@/lib/base44Api";
+import { ProductEntity } from "@/lib/types";
 import CatalogClient from "@/app/components/catalog/CatalogClient";
 
 async function getProducts(): Promise<ProductEntity[]> {

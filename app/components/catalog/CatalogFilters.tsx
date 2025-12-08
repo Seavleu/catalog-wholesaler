@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 
-const CATEGORIES = ["មើលទាំងអស់", "សម្លៀកបំពាក់កីឡាបុរស", "សម្លៀកបំពាក់កីឡាស្ត្រី", "អាវបាល់ទាត់", "អាវបាល់បោះ", "កាបូបស្ពាយ", "កាបូប", "សម្លៀកបំពាក់ម៉ូតូ", "សំលៀកបំពាក់ហែលទឹកស្ត្រី", "ស្រោមជើង", "ខោក្នុងបុរស"];
+const CATEGORIES = ["All", "សម្លៀកបំពាក់កីឡាបុរស", "សម្លៀកបំពាក់កីឡាស្ត្រី", "អាវបាល់ទាត់", "អាវបាល់បោះ", "កាបូបស្ពាយ", "កាបូប", "សម្លៀកបំពាក់ម៉ូតូ", "សំលៀកបំពាក់ហែលទឹកស្ត្រី", "ស្រោមជើង", "ខោក្នុងបុរស"];
 
 type CatalogFiltersProps = {
   searchQuery: string;
@@ -36,7 +36,7 @@ export default function CatalogFilters({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Search products, brands, or style codes..."
+            placeholder="ស្វែងរកផលិតផល, ម៉ាក, ឬប្រភេទ..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 h-11 bg-white border-gray-200 focus:border-gray-900 focus:ring-gray-900"
@@ -50,7 +50,9 @@ export default function CatalogFilters({
           </SelectTrigger>
           <SelectContent>
             {CATEGORIES.map(cat => (
-              <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+              <SelectItem key={cat} value={cat}>
+                {cat === "All" ? "មើលទាំងអស់" : cat}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -61,7 +63,7 @@ export default function CatalogFilters({
             <SelectValue placeholder="Brand" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="All">All Brands</SelectItem>
+            <SelectItem value="All">ម៉ាកទាំងអស់</SelectItem>
             {brands.map(brand => (
               <SelectItem key={brand} value={brand}>{brand}</SelectItem>
             ))}
@@ -75,7 +77,7 @@ export default function CatalogFilters({
             className="h-11 gap-2 border-gray-200 hover:bg-gray-100"
           >
             <X className="w-4 h-4" />
-            Clear
+            លុបតម្រង
           </Button>
         )}
       </div>

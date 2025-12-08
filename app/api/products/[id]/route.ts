@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServiceSupabase } from "@/lib/supabaseClient";
-import { ProductEntity } from "@/lib/base44Api";
+import { ProductEntity } from "@/lib/types";
 
 type Params = { params: { id: string } };
 

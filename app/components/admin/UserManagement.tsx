@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/app/api/base44Client";
+import { app } from "@/app/api/appClient";
 import { UserEntity } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,7 +94,7 @@ export default function UserManagement() {
   const loadUsers = async () => {
     setIsLoading(true);
     try {
-      const data = await base44.entities.User.list("-created_date");
+      const data = await app.entities.User.list("-created_date");
       setUsers(data);
     } catch (err) {
       console.error("Failed to load users:", err);
@@ -111,7 +111,7 @@ export default function UserManagement() {
         newUser.password ||
         Math.random().toString(36).slice(-10) +
           Math.random().toString(36).slice(-4).toUpperCase();
-      const user = await base44.entities.User.create({
+      const user = await app.entities.User.create({
         phone: newUser.phone,
         full_name: newUser.full_name,
         role: (newUser.role as UserEntity["role"]) || "user",
@@ -132,7 +132,7 @@ export default function UserManagement() {
 
     setIsDeleting(true);
     try {
-      await base44.entities.User.delete(deleteUser.id);
+      await app.entities.User.delete(deleteUser.id);
       setDeleteUser(null);
       await loadUsers();
     } catch (err) {

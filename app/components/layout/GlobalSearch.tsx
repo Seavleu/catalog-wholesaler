@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { base44 } from '@/app/api/base44Client';
+import { app } from '@/app/api/appClient';
 import { Input } from '@/components/ui/input';
 import { Search, Package, X, Loader2 } from 'lucide-react';
 
@@ -24,7 +24,7 @@ export default function GlobalSearch() {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    base44.entities.Product.list().then(setProducts).catch(() => {});
+    app.entities.Product.list().then(setProducts).catch(() => {});
   }, []);
 
   useEffect(() => {

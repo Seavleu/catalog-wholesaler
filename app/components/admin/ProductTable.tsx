@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Pencil, Trash2, Eye, EyeOff, Package } from "lucide-react";
-import { ProductEntity } from "@/app/api/base44Client";
+import { ProductEntity } from "@/lib/types";
 
 type StockStatusLabel = {
   text: string;

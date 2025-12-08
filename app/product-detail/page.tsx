@@ -12,8 +12,11 @@ import {
   Ruler,
   Palette,
   AlertCircle,
+  Camera,
+  Send,
+  MessageCircle,
 } from "lucide-react";
-import { base44, ProductEntity } from "@/app/api/base44Client";
+import { app, ProductEntity } from "@/app/api/appClient";
 import RelatedProducts from "@/app/components/catalog/RelatedProducts";
 import ImageMagnifier from "@/app/components/catalog/ImageMagnifier";
 
@@ -31,7 +34,7 @@ function ProductDetailContent() {
     async function load() {
       setLoading(true);
       try {
-        const products = await base44.entities.Product.list();
+        const products = await app.entities.Product.list();
         setAllProducts(products);
         const found = products.find((p) => p.id === productId);
         setProduct(found || null);
@@ -238,11 +241,33 @@ function ProductDetailContent() {
             </div>
           )}
 
-          {/* Contact CTA */}
-          <div className="pt-4 border-t">
-            <Button size="lg" className="w-full h-14 text-lg">
-              ទាក់ទងសម្រាប់ព័ត៌មានបន្ថែម
-            </Button>
+          {/* Telegram Instructions */}
+          <div className="pt-4 border-t space-y-3">
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Camera className="w-4 h-4 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 text-sm mb-1">
+                    ចង់បញ្ជាទិញផលិតផលនេះ?
+                  </h4>
+                  <p className="text-gray-700 text-xs mb-3">
+                    សូមថតរូបផលិតផលនេះ និងផ្ញើមកកាន់ Telegram របស់យើង
+                  </p>
+                  <a
+                    href="https://t.me/your_telegram_username"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>ផ្ញើទៅ Telegram</span>
+                    <Send className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

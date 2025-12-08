@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { Settings, LogOut, User } from "lucide-react";
 import GlobalSearch from "@/app/components/layout/GlobalSearch";
-import { base44 } from "@/app/api/base44Client";
+import { app } from "@/app/api/appClient";
 
 type UserType = {
   id?: string;
@@ -21,7 +21,7 @@ export default function AppShell({ children }: AppShellProps) {
   const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
-    base44.auth
+    app.auth
       .me()
       .then((u) => setUser(u as UserType | null))
       .catch(() => setUser(null));
@@ -60,7 +60,7 @@ export default function AppShell({ children }: AppShellProps) {
                 )}
                 <button
                   type="button"
-                  onClick={() => base44.auth.logout()}
+                  onClick={() => app.auth.logout()}
                   className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-base py-1"
                 >
                   <LogOut className="w-5 h-5" />

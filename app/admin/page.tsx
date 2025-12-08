@@ -7,9 +7,11 @@ import { Plus, Package, Users, Loader2 } from "lucide-react";
 import ProductTable from "@/app/components/admin/ProductTable";
 import ProductForm from "@/app/components/admin/ProductForm";
 import UserManagement from "@/app/components/admin/UserManagement";
-import { base44, ProductEntity } from "@/app/api/base44Client";
+import { app, ProductEntity } from "@/app/api/appClient";
+import { useToast } from "@/components/ui/toast";
 
 export default function AdminPage() {
+  const { showToast } = useToast();
   const [products, setProducts] = useState<ProductEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -24,7 +26,7 @@ export default function AdminPage() {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const data = await base44.entities.Product.list();
+      const data = await app.entities.Product.list();
       setProducts(data);
     } catch (err) {
       console.error("Failed to load products:", err);
@@ -35,18 +37,27 @@ export default function AdminPage() {
   const handleSave = async (formData: Partial<ProductEntity>) => {
     setSaving(true);
     try {
-      if (editProduct?.id) {
-        await base44.entities.Product.update(editProduct.id, formData);
+      const isEdit = !!editProduct?.id;
+      if (isEdit) {
+        await app.entities.Product.update(editProduct.id, formData);
+        showToast("ផលិតផលត្រូវបានធ្វើបច្ចុប្បន្នភាពដោយជោគជ័យ", "success");
       } else {
-        await base44.entities.Product.create(formData);
+        await app.entities.Product.create(formData);
+        showToast("ផលិតផលត្រូវបានបង្កើតដោយជោគជ័យ", "success");
       }
       await loadProducts();
+      // Auto-close form after successful save
       setShowForm(false);
       setEditProduct(null);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to save product:", err);
+      showToast(
+        err?.message || "មានបញ្ហាក្នុងការរក្សាទុកផលិតផល",
+        "error"
+      );
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   const handleEdit = (product: ProductEntity) => {
@@ -57,21 +68,37 @@ export default function AdminPage() {
   const handleDelete = async (product: ProductEntity) => {
     if (!confirm(`Are you sure you want to delete "${product.name}"?`)) return;
     try {
-      await base44.entities.Product.delete(product.id);
+      await app.entities.Product.delete(product.id);
+      showToast("ផលិតផលត្រូវបានលុបដោយជោគជ័យ", "success");
       await loadProducts();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to delete product:", err);
+      showToast(
+        err?.message || "មានបញ្ហាក្នុងការលុបផលិតផល",
+        "error"
+      );
     }
   };
 
   const handleToggleActive = async (product: ProductEntity) => {
     try {
-      await base44.entities.Product.update(product.id, {
-        is_active: !product.is_active,
+      const newStatus = !product.is_active;
+      await app.entities.Product.update(product.id, {
+        is_active: newStatus,
       });
+      showToast(
+        newStatus
+          ? "ផលិតផលត្រូវបានបើកដោយជោគជ័យ"
+          : "ផលិតផលត្រូវបានបិទដោយជោគជ័យ",
+        "success"
+      );
       await loadProducts();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to toggle product:", err);
+      showToast(
+        err?.message || "មានបញ្ហាក្នុងការផ្លាស់ប្តូរស្ថានភាព",
+        "error"
+      );
     }
   };
 
