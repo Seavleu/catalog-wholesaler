@@ -224,7 +224,7 @@ export default function ProductForm({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full mx-2 sm:mx-0">
         <DialogHeader>
           <DialogTitle>
             {product ? "កែសម្រួលផលិតផល" : "បន្ថែមផលិតផលថ្មី"}
@@ -233,17 +233,18 @@ export default function ProductForm({
 
         <div className="grid gap-4 py-4">
           <div className="space-y-2">
-            <Label>ឈ្មោះផលិតផល *</Label>
+            <Label className="text-sm sm:text-base">ឈ្មោះផលិតផល *</Label>
             <Input
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
               placeholder="e.g., Nike Dri-FIT Training Shirt"
+              className="h-11 sm:h-10 text-sm sm:text-base"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>ម៉ាក *</Label>
+              <Label className="text-sm sm:text-base">ម៉ាក *</Label>
               <Select
                 value={formData.brand}
                 onValueChange={(v) => handleChange("brand", v)}
@@ -261,12 +262,12 @@ export default function ProductForm({
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>ប្រភេទ *</Label>
+              <Label className="text-sm sm:text-base">ប្រភេទ *</Label>
               <Select
                 value={formData.category}
                 onValueChange={(v) => handleChange("category", v)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-11 sm:h-10 text-sm sm:text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -282,8 +283,8 @@ export default function ProductForm({
 
           {/* Cover Image */}
           <div className="space-y-2">
-            <Label>រូបភាពគម្រប</Label>
-            <div className="flex gap-4 items-start">
+            <Label className="text-sm sm:text-base">រូបភាពគម្រប</Label>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
               {formData.cover_image ? (
                 <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
                   <img
@@ -318,14 +319,14 @@ export default function ProductForm({
                 value={formData.cover_image}
                 onChange={(e) => handleChange("cover_image", e.target.value)}
                 placeholder="ឬបិទភ្ជាប់ URL រូបភាព"
-                className="flex-1"
+                className="flex-1 w-full sm:w-auto h-11 sm:h-10 text-sm sm:text-base"
               />
             </div>
           </div>
 
           {/* Catalog Images */}
           <div className="space-y-2">
-            <Label>រូបភាពកាតាឡុក</Label>
+            <Label className="text-sm sm:text-base">រូបភាពកាតាឡុក</Label>
             <p className="text-sm text-gray-500">
               បង្ហោះរូបភាពច្រើនដើម្បីបង្ហាញពណ៌ផ្សេងៗ
             </p>
@@ -368,7 +369,7 @@ export default function ProductForm({
 
           {/* Sizes */}
           <div className="space-y-2">
-            <Label>ទំហំដែលមាន</Label>
+            <Label className="text-sm sm:text-base">ទំហំដែលមាន</Label>
             <div className="flex flex-wrap gap-2">
               {SIZES.map((size) => (
                 <button
@@ -385,7 +386,7 @@ export default function ProductForm({
                       handleChange("sizes", [...current, size]);
                     }
                   }}
-                  className={`px-4 py-2 rounded-lg border text-base font-medium transition-colors ${
+                  className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg border text-sm sm:text-base font-medium transition-colors min-h-[44px] ${
                     formData.sizes?.includes(size)
                       ? "bg-gray-900 text-white border-gray-900"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
@@ -399,12 +400,12 @@ export default function ProductForm({
 
           {/* Colors */}
           <div className="space-y-2">
-            <Label>ពណ៌ដែលមាន</Label>
+            <Label className="text-sm sm:text-base">ពណ៌ដែលមាន</Label>
             <div className="flex flex-wrap gap-2">
               {(formData.colors || []).map((color, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1.5 bg-gray-100 rounded-lg text-base flex items-center gap-2"
+                  className="px-3 py-2 sm:py-1.5 bg-gray-100 rounded-lg text-sm sm:text-base flex items-center gap-2 min-h-[44px] sm:min-h-0"
                 >
                   {color}
                   <button
@@ -415,6 +416,7 @@ export default function ProductForm({
                         formData.colors.filter((_, idx) => idx !== i)
                       )
                     }
+                    className="p-1 -mr-1"
                   >
                     <X className="w-4 h-4 text-gray-500 hover:text-red-500" />
                   </button>
@@ -422,12 +424,12 @@ export default function ProductForm({
               ))}
               <Input
                 placeholder="បន្ថែមពណ៌ថ្មី (Enter)"
-                className="w-40 h-10"
+                className="w-full sm:w-40 h-11 sm:h-10 text-sm sm:text-base"
                 onKeyDown={handleColorKeyDown}
               />
             </div>
             <div className="mt-3">
-              <Label className="text-sm text-gray-600">
+              <Label className="text-sm sm:text-base text-gray-600">
                 ចំនួនពណ៌សរុបដែលមាន (ជម្រើស)
               </Label>
               <Input
@@ -441,7 +443,7 @@ export default function ProductForm({
                     e.target.value === "" ? "" : parseInt(e.target.value, 10) || ""
                   )
                 }
-                className="mt-1 h-10 text-base"
+                className="mt-1 h-11 sm:h-10 text-sm sm:text-base"
               />
               <p className="text-xs text-gray-500 mt-1">
                 បញ្ចូលចំនួនពណ៌សរុបប្រសិនបើមានពណ៌ច្រើនជាងរូបភាពដែលបានបង្ហោះ
@@ -450,14 +452,14 @@ export default function ProductForm({
           </div>
 
           {/* Stock Status */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>ស្ថានភាពស្តុក</Label>
+              <Label className="text-sm sm:text-base">ស្ថានភាពស្តុក</Label>
               <Select
                 value={formData.stock_status || "in_stock"}
                 onValueChange={(v) => handleChange("stock_status", v as StockStatus)}
               >
-                <SelectTrigger className="h-12 text-base">
+                <SelectTrigger className="h-11 sm:h-12 text-sm sm:text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -472,7 +474,7 @@ export default function ProductForm({
             {(formData.stock_status === "out_of_stock" ||
               formData.stock_status === "restocking") && (
               <div className="space-y-2">
-                <Label className="flex items-center gap-2">
+                <Label className="flex items-center gap-2 text-sm sm:text-base">
                   <Calendar className="w-4 h-4" />
                   កាលបរិច្ឆេទមកដល់ប៉ាន់ស្មាន
                 </Label>
@@ -480,7 +482,7 @@ export default function ProductForm({
                   type="date"
                   value={formData.restock_date || ""}
                   onChange={(e) => handleChange("restock_date", e.target.value)}
-                  className="h-12 text-base"
+                  className="h-11 sm:h-12 text-sm sm:text-base"
                 />
               </div>
             )}
@@ -488,22 +490,28 @@ export default function ProductForm({
 
           {/* Notes */}
           <div className="space-y-2">
-            <Label>កំណត់ចំណាំ</Label>
+            <Label className="text-sm sm:text-base">កំណត់ចំណាំ</Label>
             <Textarea
               value={formData.notes}
               onChange={(e) => handleChange("notes", e.target.value)}
               placeholder="ព័ត៌មានសម្រាប់ទំនាក់ទំនង, MOQ, etc."
+              className="text-sm sm:text-base min-h-[100px]"
             />
           </div>
         </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+        <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+          <Button 
+            variant="outline" 
+            onClick={onClose}
+            className="w-full sm:w-auto h-11 sm:h-10 text-sm sm:text-base"
+          >
             បោះបង់
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={isLoading || !formData.name || !formData.brand}
+            className="w-full sm:w-auto h-11 sm:h-10 text-sm sm:text-base"
           >
             {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             {product ? "រក្សាទុក" : "បង្កើត"} ផលិតផល

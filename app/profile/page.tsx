@@ -59,7 +59,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
       <Card className="rounded-2xl shadow-sm">
         <CardHeader className="border-b bg-gray-50 rounded-t-2xl">
           <CardTitle className="text-xl flex items-center gap-3">

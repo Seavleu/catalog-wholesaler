@@ -52,10 +52,10 @@ export default function Welcom() {
           </div>
 
           <div className="pt-2">
-            <Link href="/catalog">
+            <Link href="/catalog" className="block w-full sm:w-auto">
               <Button
                 size="lg"
-                className="h-14 px-10 text-base rounded-md bg-black hover:bg-gray-800 text-white font-medium"
+                className="w-full sm:w-auto h-14 px-8 sm:px-10 text-base rounded-md bg-black hover:bg-gray-800 text-white font-medium"
               >
                 <ShoppingBag className="w-5 h-5 mr-2" />
                 មើលផលិតផល
@@ -142,10 +142,10 @@ export default function Welcom() {
             </div>
 
             <div className="text-center">
-              <Link href="/catalog">
+              <Link href="/catalog" className="inline-block w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="h-12 px-8 text-base gap-2 border-2 border-gray-300 hover:border-gray-900 font-medium"
+                  className="w-full sm:w-auto h-12 px-6 sm:px-8 text-base gap-2 border-2 border-gray-300 hover:border-gray-900 font-medium"
                 >
                   មើលផលិតផលទាំងអស់
                   <ArrowRight className="w-5 h-5" />

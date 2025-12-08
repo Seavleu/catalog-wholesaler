@@ -93,18 +93,18 @@ function ProductDetailContent() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6 sm:space-y-8">
       {/* Back Button */}
       <Link
         href="/catalog"
-        className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors text-sm sm:text-base min-h-[44px]"
       >
-        <ArrowLeft className="w-4 h-4" />
-        ត្រឡប់ទៅកាតាឡុក
+        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span>ត្រឡប់ទៅកាតាឡុក</span>
       </Link>
 
       {/* Main Content */}
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
         {/* Images */}
         <div className="space-y-4">
           <div
@@ -129,7 +129,7 @@ function ProductDetailContent() {
 
           {/* Thumbnails */}
           {allImages.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto pb-2">
+            <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 -mx-3 sm:mx-0 px-3 sm:px-0">
               {allImages.map((img, i) => (
                 <button
                   key={i}
@@ -137,7 +137,7 @@ function ProductDetailContent() {
                     setMagnifierIndex(i);
                     setMagnifierOpen(true);
                   }}
-                  className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 border-gray-200 hover:border-gray-400 transition-colors"
+                  className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 border-gray-200 hover:border-gray-400 transition-colors min-h-[64px] sm:min-h-0"
                 >
                   <img
                     src={img}
@@ -151,21 +151,21 @@ function ProductDetailContent() {
         </div>
 
         {/* Details */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <div>
-            <p className="text-sm text-gray-500 font-medium uppercase tracking-wide">
+            <p className="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-wide">
               {product.brand}
             </p>
-            <h1 className="text-3xl font-bold text-gray-900 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 leading-tight">
               {product.name}
             </h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Badge variant="secondary" className="text-sm">
+          <div className="flex items-center flex-wrap gap-2 sm:gap-3">
+            <Badge variant="secondary" className="text-xs sm:text-sm">
               {product.category}
             </Badge>
-            <Badge className={stockLabel.color}>{stockLabel.text}</Badge>
+            <Badge className={`${stockLabel.color} text-xs sm:text-sm`}>{stockLabel.text}</Badge>
           </div>
 
           {product.restock_date &&
@@ -179,16 +179,16 @@ function ProductDetailContent() {
 
           {/* Sizes */}
           {product.sizes && product.sizes.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center gap-2 text-gray-700">
-                <Ruler className="w-4 h-4" />
-                <span className="font-medium">ទំហំដែលមាន</span>
+                <Ruler className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="font-medium text-sm sm:text-base">ទំហំដែលមាន</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((size, i) => (
                   <span
                     key={i}
-                    className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700 font-medium"
+                    className="px-3 sm:px-4 py-2 bg-gray-100 rounded-lg text-gray-700 font-medium text-sm sm:text-base min-h-[44px] sm:min-h-0 flex items-center"
                   >
                     {size}
                   </span>
@@ -199,12 +199,12 @@ function ProductDetailContent() {
 
           {/* Colors */}
           {(product.colors && product.colors.length > 0) || product.color_count ? (
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-gray-700">
-                <Palette className="w-4 h-4" />
-                <span className="font-medium">ពណ៌ដែលមាន</span>
+            <div className="space-y-2 sm:space-y-3">
+              <div className="flex items-center gap-2 text-gray-700 flex-wrap">
+                <Palette className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="font-medium text-sm sm:text-base">ពណ៌ដែលមាន</span>
                 {product.color_count && product.color_count > (product.colors?.length || 0) && (
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500">
                     ({product.color_count} ពណ៌សរុប)
                   </span>
                 )}
@@ -214,19 +214,19 @@ function ProductDetailContent() {
                   {product.colors.map((color, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full"
+                      className="flex items-center gap-2 px-3 py-2 sm:py-1.5 bg-gray-100 rounded-full min-h-[44px] sm:min-h-0"
                     >
                       <div
-                        className="w-4 h-4 rounded-full border border-gray-300"
+                        className="w-4 h-4 rounded-full border border-gray-300 flex-shrink-0"
                         style={{ backgroundColor: color.toLowerCase() }}
                       />
-                      <span className="text-sm text-gray-700">{color}</span>
+                      <span className="text-sm sm:text-base text-gray-700">{color}</span>
                     </div>
                   ))}
                 </div>
               )}
               {product.color_count && (!product.colors || product.colors.length === 0) && (
-                <p className="text-sm text-gray-600">
+                <p className="text-sm sm:text-base text-gray-600">
                   មានពណ៌ {product.color_count} ផ្សេងៗ (មិនមានរូបភាព)
                 </p>
               )}
@@ -235,31 +235,31 @@ function ProductDetailContent() {
 
           {/* Notes */}
           {product.notes && (
-            <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
-              <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5" />
-              <p className="text-blue-700">{product.notes}</p>
+            <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 rounded-lg sm:rounded-xl border border-blue-100">
+              <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+              <p className="text-sm sm:text-base text-blue-700">{product.notes}</p>
             </div>
           )}
 
           {/* Telegram Instructions */}
           <div className="pt-4 border-t space-y-3">
-            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Camera className="w-4 h-4 text-white" />
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+              <div className="flex items-start gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900 text-sm mb-1">
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
                     ចង់បញ្ជាទិញផលិតផលនេះ?
                   </h4>
-                  <p className="text-gray-700 text-xs mb-3">
+                  <p className="text-gray-700 text-xs sm:text-sm mb-3">
                     សូមថតរូបផលិតផលនេះ និងផ្ញើមកកាន់ Telegram របស់យើង
                   </p>
                   <a
                     href="https://t.me/your_telegram_username"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 sm:py-2 rounded-lg font-medium text-sm transition-colors shadow-sm w-full sm:w-auto min-h-[44px] sm:min-h-0"
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>ផ្ញើទៅ Telegram</span>

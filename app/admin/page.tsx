@@ -103,29 +103,27 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">គ្រប់គ្រង</h1>
-          <p className="text-gray-600 mt-1">គ្រប់គ្រងផលិតផល និងអ្នកប្រើប្រាស់</p>
-        </div>
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">គ្រប់គ្រង</h1>
+        <p className="text-gray-600 mt-1 text-sm sm:text-base">គ្រប់គ្រងផលិតផល និងអ្នកប្រើប្រាស់</p>
       </div>
 
-      <Tabs defaultValue="products" className="space-y-6">
-        <TabsList className="bg-gray-100 p-1 rounded-xl">
+      <Tabs defaultValue="products" className="space-y-4 sm:space-y-6">
+        <TabsList className="bg-gray-100 p-1 rounded-lg sm:rounded-xl w-full sm:w-auto">
           <TabsTrigger
             value="products"
-            className="gap-2 data-[state=active]:bg-white rounded-lg px-4 py-2"
+            className="gap-1 sm:gap-2 data-[state=active]:bg-white rounded-md sm:rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base flex-1 sm:flex-initial"
           >
             <Package className="w-4 h-4" />
-            ផលិតផល
+            <span className="whitespace-nowrap">ផលិតផល</span>
           </TabsTrigger>
           <TabsTrigger
             value="users"
-            className="gap-2 data-[state=active]:bg-white rounded-lg px-4 py-2"
+            className="gap-1 sm:gap-2 data-[state=active]:bg-white rounded-md sm:rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base flex-1 sm:flex-initial"
           >
             <Users className="w-4 h-4" />
-            អ្នកប្រើប្រាស់
+            <span className="whitespace-nowrap">អ្នកប្រើប្រាស់</span>
           </TabsTrigger>
         </TabsList>
 
@@ -136,7 +134,7 @@ export default function AdminPage() {
                 setEditProduct(null);
                 setShowForm(true);
               }}
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto h-11 sm:h-10 text-sm sm:text-base"
             >
               <Plus className="w-4 h-4" />
               បន្ថែមផលិតផល

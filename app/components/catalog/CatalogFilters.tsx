@@ -30,27 +30,27 @@ export default function CatalogFilters({
   const hasFilters = searchQuery || selectedCategory !== "All" || selectedBrand !== "All";
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-3">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
         {/* Search */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <div className="relative flex-1 min-w-0">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
           <Input
             placeholder="ស្វែងរកផលិតផល, ម៉ាក, ឬប្រភេទ..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-11 bg-white border-gray-200 focus:border-gray-900 focus:ring-gray-900"
+            className="pl-9 sm:pl-10 h-11 sm:h-12 text-sm sm:text-base bg-white border-gray-200 focus:border-gray-900 focus:ring-gray-900"
           />
         </div>
 
         {/* Category Filter */}
         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-          <SelectTrigger className="w-full sm:w-44 h-11 bg-white border-gray-200">
+          <SelectTrigger className="w-full sm:w-44 h-11 sm:h-12 text-sm sm:text-base bg-white border-gray-200">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
             {CATEGORIES.map(cat => (
-              <SelectItem key={cat} value={cat}>
+              <SelectItem key={cat} value={cat} className="text-sm sm:text-base">
                 {cat === "All" ? "មើលទាំងអស់" : cat}
               </SelectItem>
             ))}
@@ -59,13 +59,13 @@ export default function CatalogFilters({
 
         {/* Brand Filter */}
         <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-          <SelectTrigger className="w-full sm:w-44 h-11 bg-white border-gray-200">
+          <SelectTrigger className="w-full sm:w-44 h-11 sm:h-12 text-sm sm:text-base bg-white border-gray-200">
             <SelectValue placeholder="Brand" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="All">ម៉ាកទាំងអស់</SelectItem>
+            <SelectItem value="All" className="text-sm sm:text-base">ម៉ាកទាំងអស់</SelectItem>
             {brands.map(brand => (
-              <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+              <SelectItem key={brand} value={brand} className="text-sm sm:text-base">{brand}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -74,10 +74,10 @@ export default function CatalogFilters({
           <Button 
             variant="outline" 
             onClick={onClear}
-            className="h-11 gap-2 border-gray-200 hover:bg-gray-100"
+            className="h-11 sm:h-12 gap-2 border-gray-200 hover:bg-gray-100 text-sm sm:text-base w-full sm:w-auto"
           >
             <X className="w-4 h-4" />
-            លុបតម្រង
+            <span className="whitespace-nowrap">លុបតម្រង</span>
           </Button>
         )}
       </div>

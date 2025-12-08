@@ -42,7 +42,7 @@ export default function QuickViewModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl border-0 shadow-2xl">
+      <DialogContent className="max-w-2xl w-[95vw] sm:w-full p-0 overflow-hidden rounded-xl sm:rounded-2xl border-0 shadow-2xl mx-2 sm:mx-0">
         <div className="flex flex-col md:flex-row">
           {/* Image Section */}
           <div className="relative w-full md:w-1/2 aspect-square bg-gradient-to-br from-gray-100 to-gray-50">
