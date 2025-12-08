@@ -92,11 +92,9 @@ export const base44 = {
         if (!res.ok) throw new Error("Failed to fetch products");
         const products: ProductEntity[] = await res.json();
         if (sort === "-created_date") {
-          return [...products].sort(
-            (a, b) =>
-              new Date(b.created_date || 0).getTime() -
-              new Date(a.created_date || 0).getTime()
-          );
+          const getCreated = (p: ProductEntity) =>
+            new Date(p.created_at || p.created_date || 0).getTime();
+          return [...products].sort((a, b) => getCreated(b) - getCreated(a));
         }
         return products;
       },

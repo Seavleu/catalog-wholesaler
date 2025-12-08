@@ -97,7 +97,7 @@ export async function POST(req: Request) {
       phone: phone || undefined,
       password: finalPassword,
       email_confirm: true,
-      phone_confirm: true,
+      ...(phone ? { phone_confirm: true } : {}),
       user_metadata: { full_name, role },
       app_metadata: { role },
     });
