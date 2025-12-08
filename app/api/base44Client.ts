@@ -221,4 +221,3 @@ export const base44 = {
 };
 
 export type { ProductEntity, ReviewEntity };
-
