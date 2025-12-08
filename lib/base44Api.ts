@@ -11,6 +11,7 @@ export type ProductEntity = {
   catalog_images?: string[];
   sizes?: string[];
   colors?: string[];
+  color_count?: number; // Total number of colors available (may be more than images)
   stock_status?: "in_stock" | "low_stock" | "out_of_stock" | "restocking";
   restock_date?: string | null;
   notes?: string;

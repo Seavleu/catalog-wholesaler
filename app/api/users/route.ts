@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServiceSupabase, allowedRoles } from "@/lib/supabaseClient";
 import { UserEntity } from "@/lib/types";
+import { normalizePhoneToE164 } from "@/lib/phoneUtils";
 
 type AdminUser = {
   id: string;
@@ -92,12 +93,15 @@ export async function POST(req: Request) {
 
     const finalPassword = password || generatePassword();
 
+    // Normalize phone number to E.164 format if provided
+    const normalizedPhone = phone ? normalizePhoneToE164(phone) : undefined;
+
     const { data, error } = await admin.auth.admin.createUser({
       email: email || undefined,
-      phone: phone || undefined,
+      phone: normalizedPhone || undefined,
       password: finalPassword,
       email_confirm: true,
-      ...(phone ? { phone_confirm: true } : {}),
+      ...(normalizedPhone ? { phone_confirm: true } : {}),
       user_metadata: { full_name, role },
       app_metadata: { role },
     });

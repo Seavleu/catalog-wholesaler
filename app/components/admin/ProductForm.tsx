@@ -33,14 +33,18 @@ const BRANDS = [
   "Other",
 ];
 const CATEGORIES = [
-  "Men Sportswear",
-  "Women Sportswear",
-  "Football Jersey",
-  "Basketball Jersey",
-  "Backpacks",
-  "Bags",
+  "សម្លៀកបំពាក់កីឡាបុរស",
+  "សម្លៀកបំពាក់កីឡាស្ត្រី",
+  "អាវបាល់ទាត់",
+  "អាវបាល់បោះ",
+  "កាបូបស្ពាយ",
+  "កាបូប",
+  "សម្លៀកបំពាក់ម៉ូតូ",
+  "សំលៀកបំពាក់ហែលទឹកស្ត្រី",
+  "ស្រោមជើង",
+  "ខោក្នុងបុរស",
 ];
-const SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL", "Free Size"];
+const SIZES = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "Free Size"];
 const STOCK_STATUS = [
   { value: "in_stock", label: "មានស្តុក", color: "bg-green-100 text-green-700" },
   {
@@ -70,6 +74,7 @@ type ProductFormData = {
   catalog_images: string[];
   sizes: string[];
   colors: string[];
+  color_count: number | "";
   stock_status: StockStatus;
   restock_date: string;
   notes: string;
@@ -94,11 +99,12 @@ export default function ProductForm({
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
     brand: "Nike",
-    category: "Men Sportswear",
+    category: "សម្លៀកបំពាក់កីឡាបុរស",
     cover_image: "",
     catalog_images: [],
     sizes: [],
     colors: [],
+    color_count: "",
     stock_status: "in_stock",
     restock_date: "",
     notes: "",
@@ -112,11 +118,12 @@ export default function ProductForm({
       setFormData({
         name: product.name || "",
         brand: product.brand || "Nike",
-        category: product.category || "Men Sportswear",
+        category: product.category || "សម្លៀកបំពាក់កីឡាបុរស",
         cover_image: product.cover_image || "",
         catalog_images: product.catalog_images || [],
         sizes: product.sizes || [],
         colors: product.colors || [],
+        color_count: product.color_count || "",
         stock_status: product.stock_status || "in_stock",
         restock_date: product.restock_date || "",
         notes: product.notes || "",
@@ -126,11 +133,12 @@ export default function ProductForm({
       setFormData({
         name: "",
         brand: "Nike",
-        category: "Men Sportswear",
+        category: "សម្លៀកបំពាក់កីឡាបុរស",
         cover_image: "",
         catalog_images: [],
         sizes: [],
         colors: [],
+        color_count: "",
         stock_status: "in_stock",
         restock_date: "",
         notes: "",
@@ -192,7 +200,15 @@ export default function ProductForm({
   };
 
   const handleSubmit = () => {
-    onSave(formData);
+    const submitData: Partial<ProductEntity> = {
+      ...formData,
+      color_count: formData.color_count === "" ? undefined : formData.color_count,
+    };
+    // Remove id when creating new product (only include when editing)
+    if (!product?.id) {
+      delete (submitData as any).id;
+    }
+    onSave(submitData);
   };
 
   const handleColorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -287,7 +303,7 @@ export default function ProductForm({
                 <label className="w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50">
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,.jpg,.jpeg,.png"
                     className="hidden"
                     onChange={handleCoverUpload}
                   />
@@ -336,7 +352,7 @@ export default function ProductForm({
               <label className="w-20 h-20 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50">
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,.jpg,.jpeg,.png"
                   multiple
                   className="hidden"
                   onChange={handleCatalogUpload}
@@ -409,6 +425,27 @@ export default function ProductForm({
                 className="w-40 h-10"
                 onKeyDown={handleColorKeyDown}
               />
+            </div>
+            <div className="mt-3">
+              <Label className="text-sm text-gray-600">
+                ចំនួនពណ៌សរុបដែលមាន (ជម្រើស)
+              </Label>
+              <Input
+                type="number"
+                min="0"
+                placeholder="ឧ. 10 (បើមានពណ៌ 10 ផ្សេងៗ)"
+                value={formData.color_count === "" ? "" : formData.color_count}
+                onChange={(e) =>
+                  handleChange(
+                    "color_count",
+                    e.target.value === "" ? "" : parseInt(e.target.value, 10) || ""
+                  )
+                }
+                className="mt-1 h-10 text-base"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                បញ្ចូលចំនួនពណ៌សរុបប្រសិនបើមានពណ៌ច្រើនជាងរូបភាពដែលបានបង្ហោះ
+              </p>
             </div>
           </div>
 

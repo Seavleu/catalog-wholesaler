@@ -195,28 +195,40 @@ function ProductDetailContent() {
           )}
 
           {/* Colors */}
-          {product.colors && product.colors.length > 0 && (
+          {(product.colors && product.colors.length > 0) || product.color_count ? (
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-gray-700">
                 <Palette className="w-4 h-4" />
                 <span className="font-medium">ពណ៌ដែលមាន</span>
+                {product.color_count && product.color_count > (product.colors?.length || 0) && (
+                  <span className="text-sm text-gray-500">
+                    ({product.color_count} ពណ៌សរុប)
+                  </span>
+                )}
               </div>
-              <div className="flex flex-wrap gap-2">
-                {product.colors.map((color, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full"
-                  >
+              {product.colors && product.colors.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((color, i) => (
                     <div
-                      className="w-4 h-4 rounded-full border border-gray-300"
-                      style={{ backgroundColor: color.toLowerCase() }}
-                    />
-                    <span className="text-sm text-gray-700">{color}</span>
-                  </div>
-                ))}
-              </div>
+                      key={i}
+                      className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full"
+                    >
+                      <div
+                        className="w-4 h-4 rounded-full border border-gray-300"
+                        style={{ backgroundColor: color.toLowerCase() }}
+                      />
+                      <span className="text-sm text-gray-700">{color}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {product.color_count && (!product.colors || product.colors.length === 0) && (
+                <p className="text-sm text-gray-600">
+                  មានពណ៌ {product.color_count} ផ្សេងៗ (មិនមានរូបភាព)
+                </p>
+              )}
             </div>
-          )}
+          ) : null}
 
           {/* Notes */}
           {product.notes && (

@@ -6,21 +6,32 @@ import { base44 } from "@/app/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle, Loader2, LogIn } from "lucide-react";
+import { AlertCircle, Loader2, LogIn, Mail, Phone } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Detect if input is email or phone
+  const isEmail = (value: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      await base44.auth.login({ email, password });
+      if (isEmail(identifier)) {
+        // Admin login with email
+        await base44.auth.login({ email: identifier, password });
+      } else {
+        // User login with phone
+        await base44.auth.login({ phone: identifier, password });
+      }
       router.push("/profile");
       router.refresh();
     } catch (err: any) {
@@ -38,21 +49,38 @@ export default function LoginPage() {
             ចូលគណនី
           </CardTitle>
           <p className="text-center text-gray-500 text-sm">
-            ប្រើអ៊ីមែល និងពាក្យសម្ងាត់ Supabase ដែលបានបង្កើត
+            អ្នកគ្រប់គ្រង: ប្រើអ៊ីមែល | អ្នកប្រើប្រាស់: ប្រើលេខទូរស័ព្ទ
           </p>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleLogin}>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">អ៊ីមែល</label>
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                {isEmail(identifier) ? (
+                  <>
+                    <Mail className="w-4 h-4" />
+                    អ៊ីមែល (Admin)
+                  </>
+                ) : (
+                  <>
+                    <Phone className="w-4 h-4" />
+                    លេខទូរស័ព្ទ (User)
+                  </>
+                )}
+              </label>
               <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
+                type="text"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+                placeholder={isEmail(identifier) ? "admin@example.com" : "012345678"}
                 required
                 className="h-11 text-base"
               />
+              <p className="text-xs text-gray-500">
+                {isEmail(identifier)
+                  ? "ប្រើអ៊ីមែលសម្រាប់អ្នកគ្រប់គ្រង"
+                  : "ប្រើលេខទូរស័ព្ទសម្រាប់អ្នកប្រើប្រាស់ (ឧ. 012345678)"}
+              </p>
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">ពាក្យសម្ងាត់</label>
@@ -76,7 +104,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               className="w-full h-11 text-base gap-2"
-              disabled={loading}
+              disabled={loading || !identifier || !password}
             >
               {loading ? (
                 <>

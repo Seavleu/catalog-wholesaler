@@ -277,6 +277,9 @@ export default function UserManagement() {
                 placeholder="012345678"
                 className="mt-2 h-12 text-base"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                បញ្ចូលលេខទូរស័ព្ទកម្ពុជា (ឧ. 012345678) - នឹងបម្លែងទៅជា E.164 ដោយស្វ័យប្រវត្តិ
+              </p>
             </div>
             <div>
               <Label className="text-base">តួនាទី *</Label>

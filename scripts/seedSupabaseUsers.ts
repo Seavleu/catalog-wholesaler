@@ -23,78 +23,109 @@ const randomPassword = () =>
   randomBytes(6).toString("base64url") +
   randomBytes(4).toString("hex").toUpperCase();
 
-const seedUsers: Array<{
-  email: string;
-  full_name: string;
+const requiredRoles: Array<{
   role: Role;
-  password: string;
+  full_name: string;
 }> = [
   {
-    email: "admin@example.com",
-    full_name: "Admin User",
     role: "admin",
-    password: "admin123",
+    full_name: "Admin User",
   },
   {
-    email: "manager@example.com",
-    full_name: "Manager User",
     role: "manager",
-    password: "manager123",
+    full_name: "Manager User",
   },
   {
-    email: "user@example.com",
-    full_name: "Customer User",
     role: "user",
-    password: "user123",
+    full_name: "Customer User",
   },
 ];
 
-async function ensureUser({
-  email,
-  full_name,
-  role,
-  password,
-}: {
-  email: string;
-  full_name: string;
-  role: Role;
-  password?: string;
-}) {
+async function getUsersByRole(role: Role) {
   const { data: list, error: listError } = await admin.auth.admin.listUsers({
     page: 1,
     perPage: 1000,
   });
   if (listError) throw listError;
 
-  const existing = list?.users.find((u) => u.email === email);
-  if (existing) {
-    await admin.auth.admin.updateUserById(existing.id, {
+  return (
+    list?.users.filter(
+      (u) => u.app_metadata?.role === role || u.user_metadata?.role === role
+    ) || []
+  );
+}
+
+async function ensureRoleExists({
+  role,
+  full_name,
+}: {
+  role: Role;
+  full_name: string;
+}) {
+  const existingUsers = await getUsersByRole(role);
+
+  if (existingUsers.length > 0) {
+    // Role already exists, return existing users
+    return existingUsers.map((u) => ({
+      email: u.email || "N/A",
+      full_name: (u.user_metadata?.full_name as string) || full_name,
+      role,
+      status: "exists",
+      user_id: u.id,
+    }));
+  }
+
+  // No user with this role exists, create one
+  const email = `${role}@example.com`;
+  const password = randomPassword();
+
+  const { data: newUser, error: createError } =
+    await admin.auth.admin.createUser({
+      email,
       password,
+      email_confirm: true,
       user_metadata: { full_name, role },
       app_metadata: { role },
     });
-    return { email, password, role, status: "updated" };
+
+  if (createError) throw createError;
+
+  // Also ensure profile exists
+  const { error: profileError } = await admin.from("profiles").upsert({
+    id: newUser.user.id,
+    full_name,
+    role,
+  });
+
+  if (profileError) {
+    console.warn(`Failed to create profile for ${role}:`, profileError.message);
   }
 
-  const finalPassword = password || randomPassword();
-  const { error: createError } = await admin.auth.admin.createUser({
-    email,
-    password: finalPassword,
-    email_confirm: true,
-    user_metadata: { full_name, role },
-    app_metadata: { role },
-  });
-  if (createError) throw createError;
-  return { email, password: finalPassword, role, status: "created" };
+  return [
+    {
+      email: newUser.user.email || email,
+      full_name,
+      role,
+      password,
+      status: "created",
+      user_id: newUser.user.id,
+    },
+  ];
 }
 
 async function run() {
+  console.log("Checking database for required users...\n");
+
   const results = [];
-  for (const user of seedUsers) {
-    results.push(await ensureUser(user));
+  for (const { role, full_name } of requiredRoles) {
+    const roleUsers = await ensureRoleExists({ role, full_name });
+    results.push(...roleUsers);
   }
+
   console.table(results);
-  console.log("Seeding complete.");
+  console.log("\nSeeding complete.");
+  console.log("\nNote: Passwords are only shown for newly created users.");
+  console.log("For existing users, use Supabase dashboard to reset passwords if needed.");
 }
 
 run().catch((err) => {

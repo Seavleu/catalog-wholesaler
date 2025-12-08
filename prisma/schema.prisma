@@ -6,6 +6,15 @@ datasource db {
   provider = "postgresql"
 }
 
+model Profile {
+    id String @id // will store auth.users.id
+    full_name String?
+    role String @default("user")
+    created_date DateTime @default(now())
+
+    @@map("profiles")
+}
+
 model Product {
   id             String   @id @default(uuid())
   name           String
@@ -15,6 +24,7 @@ model Product {
   catalog_images String[] @db.Text
   sizes          String[] @db.Text
   colors         String[] @db.Text
+  color_count    Int?     // Total number of colors available (may be more than images)
   stock_status   String   @default("in_stock")
   restock_date   DateTime?
   notes          String?

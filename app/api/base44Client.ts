@@ -13,6 +13,7 @@ import {
 } from "@/lib/base44Api";
 import { getBrowserSupabase } from "@/lib/supabaseClient";
 import { UserEntity } from "@/lib/types";
+import { normalizePhoneToE164 } from "@/lib/phoneUtils";
 
 type UserCreatePayload = Partial<UserEntity> & { password?: string };
 
@@ -21,15 +22,19 @@ export const base44 = {
   auth: {
     login: async ({
       email,
+      phone,
       password,
     }: {
-      email: string;
+      email?: string;
+      phone?: string;
       password: string;
     }): Promise<UserEntity | null> => {
       const supabase = getBrowserSupabase();
       if (!supabase) throw new Error("Supabase env vars missing");
+      
+      // Use email if provided, otherwise use phone (normalize phone to E.164)
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        ...(email ? { email } : { phone: normalizePhoneToE164(phone!) }),
         password,
       });
       if (error) throw error;
@@ -208,11 +213,21 @@ export const base44 = {
       }: {
         file: File;
       }): Promise<{ file_url: string }> => {
-        // For development, return a placeholder or implement actual upload
-        // In production, wire this to your file upload endpoint
-        return {
-          file_url: URL.createObjectURL(file),
-        };
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || "Failed to upload file");
+        }
+
+        const data = await res.json();
+        return { file_url: data.file_url };
       },
     },
   },
