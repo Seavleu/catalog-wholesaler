@@ -12,6 +12,7 @@ import {
   MapPin,
   Facebook,
   ExternalLink,
+  Info,
 } from "lucide-react";
 import { app, ProductEntity } from "@/app/api/appClient";
 
@@ -59,7 +60,7 @@ export default function Welcom() {
                     1
                   </div>
                   <p>
-                    <strong className="text-foreground">រុករកផលិតផល:</strong> ចុចលើប៊ូតុង "មើលផលិតផល" ឬប្រើប្រាស់ម៉ឺនុយខាងលើដើម្បីរុករកកាតាឡុកផលិតផលទាំងអស់
+                    <strong className="text-foreground">ចូលគណនី:</strong> អ្នកត្រូវតែចូលគណនីជាមុនដើម្បីមើលកាតាឡុកផលិតផល។ ប្រសិនបើអ្នកមិនទាន់មានគណនី សូមទំនាក់ទំនង MeyMey Sport។
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -67,7 +68,7 @@ export default function Welcom() {
                     2
                   </div>
                   <p>
-                    <strong className="text-foreground">ស្វែងរក:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
+                    <strong className="text-foreground">រុករកផលិតផល:</strong> ចុចលើប៊ូតុង "មើលផលិតផល" ឬប្រើប្រាស់ម៉ឺនុយខាងលើដើម្បីរុករកកាតាឡុកផលិតផលទាំងអស់
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -75,12 +76,20 @@ export default function Welcom() {
                     3
                   </div>
                   <p>
-                    <strong className="text-foreground">មើលព័ត៌មានលម្អិត:</strong> ចុចលើផលិតផលណាមួយដើម្បីមើលរូបភាព ទំហំ និងព័ត៌មានលម្អិតផ្សេងៗ
+                    <strong className="text-foreground">ស្វែងរក:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold mt-0.5">
                     4
+                  </div>
+                  <p>
+                    <strong className="text-foreground">មើលព័ត៌មានលម្អិត:</strong> ចុចលើផលិតផលណាមួយដើម្បីមើលរូបភាព ទំហំ និងព័ត៌មានលម្អិតផ្សេងៗ
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold mt-0.5">
+                    5
                   </div>
                   <p>
                     <strong className="text-foreground">ទំនាក់ទំនង:</strong> សម្រាប់ការបញ្ជាទិញ ឬសំណួរ សូមទំនាក់ទំនងតាមទូរស័ព្ទ ឬ Facebook ដែលមាននៅខាងក្រោម
@@ -90,7 +99,43 @@ export default function Welcom() {
             </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-2 space-y-4">
+            {/* Login Requirement Notice */}
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 sm:p-5">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
+                  <Info className="w-4 h-4 sm:w-5 sm:h-5 text-primary-foreground" />
+                </div>
+                <div className="flex-1 space-y-2">
+                  <h3 className="font-semibold text-foreground text-sm sm:text-base">
+                    ចំណាំ: កាតាឡុកត្រូវការចូលគណនី
+                  </h3>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                    ដើម្បីមើលកាតាឡុកផលិតផល អ្នកត្រូវតែចូលគណនីជាមុន។ ប្រសិនបើអ្នកមិនទាន់មានគណនី សូមទំនាក់ទំនង <strong className="text-foreground">MeyMey Sport</strong> ដើម្បីបង្កើតគណនី។
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+                    <a
+                      href="tel:+85512862336"
+                      className="inline-flex items-center gap-2 text-sm sm:text-base text-primary hover:text-primary/80 font-medium transition-colors"
+                    >
+                      <Phone className="w-4 h-4" />
+                      <span>ទូរស័ព្ទ: 012 862 336</span>
+                    </a>
+                    <span className="hidden sm:inline text-muted-foreground">•</span>
+                    <a
+                      href="https://www.facebook.com/meymey1789/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm sm:text-base text-primary hover:text-primary/80 font-medium transition-colors"
+                    >
+                      <Facebook className="w-4 h-4" />
+                      <span>Facebook</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <Button
               size="lg"
               onClick={async () => {
