@@ -49,6 +49,8 @@ import {
   CheckCircle2,
   Phone,
   Mail,
+  Search,
+  X,
 } from "lucide-react";
 
 const ROLE_LABELS: Record<string, string> = {
@@ -86,6 +88,7 @@ export default function UserManagement() {
   const [deleteUser, setDeleteUser] = useState<UserEntity | null>(null);
   const [copied, setCopied] = useState(false);
   const [users, setUsers] = useState<UserEntity[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -155,6 +158,24 @@ export default function UserManagement() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Filter users based on search query
+  const filteredUsers = users.filter((user) => {
+    if (!searchQuery.trim()) return true;
+    
+    const query = searchQuery.toLowerCase().trim();
+    const name = (user.full_name || "").toLowerCase();
+    const phone = (user.phone || "").toLowerCase();
+    const email = (user.email || "").toLowerCase();
+    const role = (ROLE_LABELS[user.role || "user"] || "").toLowerCase();
+    
+    return (
+      name.includes(query) ||
+      phone.includes(query) ||
+      email.includes(query) ||
+      role.includes(query)
+    );
+  });
+
   return (
     <div className="space-y-6">
       <Card className="rounded-2xl shadow-sm border">
@@ -173,7 +194,29 @@ export default function UserManagement() {
             បង្កើតគណនី
           </Button>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 space-y-4">
+          {/* Search Bar */}
+          {!isLoading && (
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                placeholder="ស្វែងរកអ្នកប្រើប្រាស់តាមឈ្មោះ, លេខទូរស័ព្ទ, អ៊ីមែល, ឬតួនាទី..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-10 h-12 text-base"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded transition-colors"
+                  title="លុប"
+                >
+                  <X className="w-4 h-4 text-muted-foreground" />
+                </button>
+              )}
+            </div>
+          )}
+
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
@@ -191,7 +234,8 @@ export default function UserManagement() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user) => (
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium text-base">
                         {user.full_name || "-"}
@@ -211,7 +255,7 @@ export default function UserManagement() {
                           {ROLE_LABELS[user.role || "user"] || ROLE_LABELS.user}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-base text-foreground-500">
+                      <TableCell className="text-base text-muted-foreground">
                         {user.created_date
                           ? new Date(user.created_date).toLocaleDateString(
                               "km-KH"
@@ -231,14 +275,29 @@ export default function UserManagement() {
                         )}
                       </TableCell>
                     </TableRow>
-                  ))}
-                  {users.length === 0 && (
+                    ))
+                  ) : (
                     <TableRow>
                       <TableCell
                         colSpan={5}
-                        className="text-center py-12 text-foreground-500"
+                        className="text-center py-12 text-muted-foreground"
                       >
-                        រកមិនឃើញអ្នកប្រើប្រាស់។
+                        {searchQuery ? (
+                          <div className="space-y-2">
+                            <p>រកមិនឃើញអ្នកប្រើប្រាស់ដែលត្រូវនឹង "{searchQuery}"</p>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setSearchQuery("")}
+                              className="gap-2"
+                            >
+                              <X className="w-4 h-4" />
+                              លុបតម្រង
+                            </Button>
+                          </div>
+                        ) : (
+                          "រកមិនឃើញអ្នកប្រើប្រាស់។"
+                        )}
                       </TableCell>
                     </TableRow>
                   )}
@@ -283,7 +342,7 @@ export default function UserManagement() {
                 placeholder="012345678"
                 className="mt-2 h-12 text-base"
               />
-              <p className="text-xs text-foreground-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 បញ្ចូលលេខទូរស័ព្ទកម្ពុជា (ឧ. 092862336) - អ្នកប្រើប្រាស់អាចចូលគណនីដោយប្រើលេខទូរស័ព្ទនេះដោយផ្ទាល់
               </p>
             </div>
@@ -301,7 +360,7 @@ export default function UserManagement() {
                 placeholder="admin@meymeysport.com"
                 className="mt-2 h-12 text-base"
               />
-              <p className="text-xs text-foreground-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 បញ្ចូលអ៊ីមែលសម្រាប់អ្នកគ្រប់គ្រង (Admin/Manager)
               </p>
             </div>
@@ -332,7 +391,7 @@ export default function UserManagement() {
                 placeholder="បញ្ចូលពាក្យសម្ងាត់ ឬទុកទទេដើម្បីបង្កើតដោយស្វ័យប្រវត្តិ"
                 className="mt-2 h-12 text-base"
               />
-              <p className="text-sm text-foreground-500 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 បើទុកទទេ នឹងបង្កើតពាក្យសម្ងាត់ដោយស្វ័យប្រវត្តិ
               </p>
             </div>
@@ -376,35 +435,35 @@ export default function UserManagement() {
               <div className="space-y-3 bg-white rounded-lg p-4 border border-yellow-300">
                 {createdUser?.phone && (
                   <div>
-                    <Label className="text-sm text-foreground-600 flex items-center gap-2">
+                    <Label className="text-sm text-foreground flex items-center gap-2">
                       <Phone className="w-4 h-4" />
                       លេខទូរស័ព្ទ
                     </Label>
-                    <p className="text-lg font-mono font-semibold text-foreground-900 break-all">
+                    <p className="text-lg font-mono font-semibold text-foreground break-all">
                       {createdUser.phone}
                     </p>
                   </div>
                 )}
                 {createdUser?.email && (
                   <div>
-                    <Label className="text-sm text-foreground-600 flex items-center gap-2">
+                    <Label className="text-sm text-foreground flex items-center gap-2">
                       <Mail className="w-4 h-4" />
                       អ៊ីមែល
                     </Label>
-                    <p className="text-lg font-mono font-semibold text-foreground-900 break-all">
+                    <p className="text-lg font-mono font-semibold text-foreground break-all">
                       {createdUser.email}
                     </p>
                   </div>
                 )}
                 <div>
-                  <Label className="text-sm text-foreground-600">ពាក្យសម្ងាត់</Label>
-                  <p className="text-lg font-mono font-semibold text-foreground-900">
+                  <Label className="text-sm text-foreground">ពាក្យសម្ងាត់</Label>
+                  <p className="text-lg font-mono font-semibold text-foreground">
                     {createdUser?.password}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-sm text-foreground-600">តួនាទី</Label>
-                  <p className="text-lg font-semibold text-foreground-900">
+                  <Label className="text-sm text-foreground">តួនាទី</Label>
+                  <p className="text-lg font-semibold text-foreground">
                     {ROLE_LABELS[createdUser?.role || "user"] ||
                       ROLE_LABELS.user}
                   </p>
