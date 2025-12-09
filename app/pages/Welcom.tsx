@@ -42,13 +42,51 @@ export default function Welcom() {
       {/* Hero Section - Compact */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="space-y-6">
-          <div className="space-y-3">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-gray-900 leading-tight">
-              MeyMey Sport
-            </h1>
+          <div className="space-y-4">
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed">
               រុករកផលិតផលកីឡាដែលមានគុណភាពខ្ពស់ពីម៉ាកល្បីៗ
             </p>
+            
+            {/* Instructions */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 space-y-4">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+                របៀបប្រើប្រាស់
+              </h2>
+              <div className="space-y-3 text-sm sm:text-base text-gray-700">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                    1
+                  </div>
+                  <p>
+                    <strong className="text-gray-900">រុករកផលិតផល:</strong> ចុចលើប៊ូតុង "មើលផលិតផល" ឬប្រើប្រាស់ម៉ឺនុយខាងលើដើម្បីរុករកកាតាឡុកផលិតផលទាំងអស់
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                    2
+                  </div>
+                  <p>
+                    <strong className="text-gray-900">ចម្រៀង/តម្រង:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកឬតម្រងតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                    3
+                  </div>
+                  <p>
+                    <strong className="text-gray-900">មើលព័ត៌មានលម្អិត:</strong> ចុចលើផលិតផលណាមួយដើម្បីមើលរូបភាព ទំហំ និងព័ត៌មានលម្អិតផ្សេងៗ
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                    4
+                  </div>
+                  <p>
+                    <strong className="text-gray-900">ទំនាក់ទំនង:</strong> សម្រាប់ការបញ្ជាទិញ ឬសំណួរ សូមទំនាក់ទំនងតាមទូរស័ព្ទ ឬ Facebook ដែលមាននៅខាងក្រោម
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="pt-2">
