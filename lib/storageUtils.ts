@@ -56,3 +56,26 @@ export function isSupabaseStorageUrl(url: string): boolean {
   }
 }
 
+/**
+ * Normalizes an image URL to ensure it's a valid absolute URL
+ * Handles cases where URLs might be relative or malformed
+ */
+export function normalizeImageUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  
+  try {
+    // If it's already a valid absolute URL, return it
+    const urlObj = new URL(url);
+    return urlObj.href;
+  } catch {
+    // If it's a relative URL or malformed, try to construct absolute URL
+    // This shouldn't happen with Supabase storage, but handle it gracefully
+    if (url.startsWith('/')) {
+      // Relative URL - would need base URL, but we can't determine it here
+      console.warn('Relative image URL detected:', url);
+      return null;
+    }
+    return null;
+  }
+}
+

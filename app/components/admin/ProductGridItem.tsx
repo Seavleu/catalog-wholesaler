@@ -51,6 +51,12 @@ export default function ProductGridItem({
               src={product.cover_image}
               alt={product.name}
               className="w-full h-full object-cover"
+              loading="lazy"
+              onError={(e) => {
+                console.error('Image failed to load:', product.cover_image);
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">

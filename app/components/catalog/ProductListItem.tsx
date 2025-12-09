@@ -37,7 +37,9 @@ export default function ProductListItem({
               src={displayImage} 
               alt={product.name || 'Product image'}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
               onError={(e) => {
+                console.error('Image failed to load:', displayImage);
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
                 const parent = target.parentElement;

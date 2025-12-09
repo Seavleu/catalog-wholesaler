@@ -38,8 +38,10 @@ export default function ProductCard({
             src={displayImage} 
             alt={product.name || 'Product image'}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
             onError={(e) => {
               // Fallback if image fails to load
+              console.error('Image failed to load:', displayImage);
               const target = e.target as HTMLImageElement;
               target.style.display = 'none';
               const parent = target.parentElement;
@@ -51,6 +53,12 @@ export default function ProductCard({
                     </svg>
                   </div>
                 `;
+              }
+            }}
+            onLoad={() => {
+              // Log successful image loads in development
+              if (process.env.NODE_ENV === 'development') {
+                console.log('Image loaded successfully:', displayImage);
               }
             }}
           />
