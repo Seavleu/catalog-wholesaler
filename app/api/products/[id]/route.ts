@@ -1,24 +1,13 @@
 import { NextResponse } from "next/server";
 import { getServiceSupabase } from "@/lib/supabaseClient";
 import { ProductEntity } from "@/lib/types";
+import {
+  extractFilePathFromUrl,
+  extractImagePathsFromProduct,
+  isSupabaseStorageUrl,
+} from "@/lib/storageUtils";
 
 type Params = { params: { id: string } };
-
-/**
- * Extracts the file path from a Supabase Storage public URL
- * Example: https://xxx.supabase.co/storage/v1/object/public/product-images/products/file.jpg
- * Returns: products/file.jpg
- */
-function extractFilePathFromUrl(url: string): string | null {
-  try {
-    const urlObj = new URL(url);
-    // Extract path after /public/product-images/
-    const match = urlObj.pathname.match(/\/storage\/v1\/object\/public\/product-images\/(.+)$/);
-    return match ? match[1] : null;
-  } catch {
-    return null;
-  }
-}
 
 export async function PUT(req: Request, { params }: Params) {
   try {
@@ -44,32 +33,36 @@ export async function PUT(req: Request, { params }: Params) {
       .single();
     if (error) throw error;
     
-    // Delete old images that are no longer referenced
+    // Delete old images that are no longer referenced (only Supabase storage images)
     if (currentProduct) {
       const oldImages: string[] = [];
       const newImages: string[] = [];
       
-      // Collect old images
-      if (currentProduct.cover_image) {
+      // Collect old images (only from Supabase storage)
+      if (currentProduct.cover_image && isSupabaseStorageUrl(currentProduct.cover_image)) {
         const path = extractFilePathFromUrl(currentProduct.cover_image);
         if (path) oldImages.push(path);
       }
       if (currentProduct.catalog_images && Array.isArray(currentProduct.catalog_images)) {
         currentProduct.catalog_images.forEach((img: string) => {
-          const path = extractFilePathFromUrl(img);
-          if (path) oldImages.push(path);
+          if (isSupabaseStorageUrl(img)) {
+            const path = extractFilePathFromUrl(img);
+            if (path) oldImages.push(path);
+          }
         });
       }
       
-      // Collect new images
-      if (body.cover_image) {
+      // Collect new images (only from Supabase storage)
+      if (body.cover_image && isSupabaseStorageUrl(body.cover_image)) {
         const path = extractFilePathFromUrl(body.cover_image);
         if (path) newImages.push(path);
       }
       if (body.catalog_images && Array.isArray(body.catalog_images)) {
         body.catalog_images.forEach((img: string) => {
-          const path = extractFilePathFromUrl(img);
-          if (path) newImages.push(path);
+          if (isSupabaseStorageUrl(img)) {
+            const path = extractFilePathFromUrl(img);
+            if (path) newImages.push(path);
+          }
         });
       }
       
@@ -84,7 +77,14 @@ export async function PUT(req: Request, { params }: Params) {
         
         // Log storage errors but don't fail the update operation
         if (storageError) {
-          console.warn("Some old images could not be deleted from storage:", storageError);
+          console.warn(
+            `Failed to delete ${imagesToDelete.length} old image(s) from storage:`,
+            storageError
+          );
+        } else {
+          console.log(
+            `Successfully deleted ${imagesToDelete.length} old image(s) from storage for product ${params.id}`
+          );
         }
       }
     }
@@ -115,24 +115,21 @@ export async function DELETE(_: Request, { params }: Params) {
       throw fetchError;
     }
     
-    // Delete associated images from storage if product exists
+    // Delete associated images from storage if product exists (only Supabase storage images)
     if (product) {
+      // Only extract paths from Supabase storage URLs
       const filesToDelete: string[] = [];
       
-      // Extract cover image path
-      if (product.cover_image) {
-        const coverPath = extractFilePathFromUrl(product.cover_image);
-        if (coverPath) {
-          filesToDelete.push(coverPath);
-        }
+      if (product.cover_image && isSupabaseStorageUrl(product.cover_image)) {
+        const path = extractFilePathFromUrl(product.cover_image);
+        if (path) filesToDelete.push(path);
       }
       
-      // Extract catalog image paths
       if (product.catalog_images && Array.isArray(product.catalog_images)) {
         product.catalog_images.forEach((imgUrl: string) => {
-          const imgPath = extractFilePathFromUrl(imgUrl);
-          if (imgPath) {
-            filesToDelete.push(imgPath);
+          if (isSupabaseStorageUrl(imgUrl)) {
+            const path = extractFilePathFromUrl(imgUrl);
+            if (path) filesToDelete.push(path);
           }
         });
       }
@@ -146,7 +143,14 @@ export async function DELETE(_: Request, { params }: Params) {
         // Log storage errors but don't fail the delete operation
         // (in case files were already deleted or don't exist)
         if (storageError) {
-          console.warn("Some files could not be deleted from storage:", storageError);
+          console.warn(
+            `Failed to delete ${filesToDelete.length} image(s) from storage:`,
+            storageError
+          );
+        } else {
+          console.log(
+            `Successfully deleted ${filesToDelete.length} image(s) from storage for product ${params.id}`
+          );
         }
       }
     }
