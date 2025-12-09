@@ -3,9 +3,11 @@
 import React, { useMemo, useState } from "react";
 import CatalogFilters from "@/app/components/catalog/CatalogFilters";
 import ProductCard from "@/app/components/catalog/ProductCard";
+import ProductListItem from "@/app/components/catalog/ProductListItem";
 import QuickViewModal from "@/app/components/catalog/QuickViewModal";
 import { ProductEntity } from "@/lib/types";
-import { Camera, Send, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Camera, Send, MessageCircle, ChevronDown, ChevronUp, Grid3x3, List, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type CatalogClientProps = {
   initialProducts: ProductEntity[];
@@ -19,6 +21,8 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
   const [quickViewProduct, setQuickViewProduct] = useState<ProductEntity | null>(null);
   const [quickViewIndex, setQuickViewIndex] = useState(0);
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   const visibleProducts = useMemo(() => {
     return initialProducts.filter((p) => {
@@ -150,18 +154,104 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
           )}
         </div>
 
-        {/* Filters Section */}
-        <div className="bg-card rounded-lg sm:rounded-xl shadow-sm border border-border p-3 sm:p-4 md:p-6">
-          <CatalogFilters
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        selectedBrand={selectedBrand}
-        setSelectedBrand={setSelectedBrand}
-        brands={brands}
-        onClear={handleClearFilters}
-      />
+        {/* Filters Section - Expandable on Mobile */}
+        <div className="bg-card rounded-lg sm:rounded-xl shadow-sm border border-border overflow-hidden">
+          {/* Mobile: Collapsible Header */}
+          <button
+            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+            className="w-full sm:hidden flex items-center justify-between p-3 hover:bg-muted/50 transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <Filter className="w-4 h-4 text-muted-foreground" />
+              <span className="font-medium text-foreground">តម្រង</span>
+              {(searchQuery || selectedCategory !== "All" || selectedBrand !== "All") && (
+                <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
+                  {(searchQuery ? 1 : 0) + (selectedCategory !== "All" ? 1 : 0) + (selectedBrand !== "All" ? 1 : 0)}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <Button
+                  variant={viewMode === "grid" ? "default" : "outline"}
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setViewMode("grid");
+                  }}
+                  className="h-8 w-8 p-0"
+                >
+                  <Grid3x3 className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "outline"}
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setViewMode("list");
+                  }}
+                  className="h-8 w-8 p-0"
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+              </div>
+              {isFiltersOpen ? (
+                <ChevronUp className="w-4 h-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              )}
+            </div>
+          </button>
+
+          {/* Desktop: Always Visible */}
+          <div className="hidden sm:block p-3 sm:p-4 md:p-6 space-y-4">
+            <CatalogFilters
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              selectedBrand={selectedBrand}
+              setSelectedBrand={setSelectedBrand}
+              brands={brands}
+              onClear={handleClearFilters}
+            />
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+              <Button
+                variant={viewMode === "grid" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("grid")}
+                className="gap-2"
+              >
+                <Grid3x3 className="w-4 h-4" />
+                <span>ក្រឡា</span>
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setViewMode("list")}
+                className="gap-2"
+              >
+                <List className="w-4 h-4" />
+                <span>បញ្ជី</span>
+              </Button>
+            </div>
+          </div>
+
+          {/* Mobile: Collapsible Content */}
+          {isFiltersOpen && (
+            <div className="sm:hidden p-3 space-y-4 border-t border-border">
+              <CatalogFilters
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                selectedBrand={selectedBrand}
+                setSelectedBrand={setSelectedBrand}
+                brands={brands}
+                onClear={handleClearFilters}
+              />
+            </div>
+          )}
         </div>
 
         {/* Products Grid */}
@@ -191,17 +281,27 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
               </div>
             </div>
         </div>
+            ) : viewMode === "grid" ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
+                {visibleProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onClick={() => openQuickView(product)}
+                  />
+                ))}
+              </div>
             ) : (
-               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
-                 {visibleProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onClick={() => openQuickView(product)}
-            />
-          ))}
-        </div>
-      )}
+              <div className="space-y-3">
+                {visibleProducts.map((product) => (
+                  <ProductListItem
+                    key={product.id}
+                    product={product}
+                    onClick={() => openQuickView(product)}
+                  />
+                ))}
+              </div>
+            )}
       </div>
 
       <QuickViewModal

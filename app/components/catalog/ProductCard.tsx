@@ -9,7 +9,10 @@ type ProductCardProps = {
   onClick: () => void;
 };
 
-export default function ProductCard({ product, onClick }: ProductCardProps) {
+export default function ProductCard({ 
+  product, 
+  onClick
+}: ProductCardProps) {
   // Map stock_status to display - using only ProductEntity fields
   const stockStatus = product.stock_status || 'in_stock';
   const stockStatusMap = {
