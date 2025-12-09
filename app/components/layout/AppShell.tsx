@@ -3,7 +3,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { Settings, LogOut, User } from "lucide-react";
-import GlobalSearch from "@/app/components/layout/GlobalSearch";
 import ThemeToggle from "@/app/components/layout/ThemeToggle";
 import { app } from "@/app/api/appClient";
 
@@ -37,43 +36,40 @@ export default function AppShell({ children }: AppShellProps) {
           {user ? (
             <>
               {/* Mobile Layout: Stacked */}
-              <div className="flex flex-col space-y-2 sm:hidden">
-                <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 sm:hidden">
+                <Link
+                  href="/"
+                  className="text-lg font-semibold text-primary-foreground hover:opacity-80 transition-opacity whitespace-nowrap"
+                >
+                  MeyMey Sport
+                </Link>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <ThemeToggle />
                   <Link
-                    href="/"
-                    className="text-lg font-semibold text-primary-foreground hover:opacity-80 transition-opacity whitespace-nowrap"
+                    href="/profile"
+                    className="p-1.5 text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                    title="គណនី"
                   >
-                    MeyMey Sport
+                    <User className="w-4 h-4" />
                   </Link>
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    <ThemeToggle />
+                  {canManage && (
                     <Link
-                      href="/profile"
+                      href="/admin"
                       className="p-1.5 text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                      title="គណនី"
+                      title={user.role === "manager" ? "គ្រប់គ្រងផលិតផល" : "គ្រប់គ្រង"}
                     >
-                      <User className="w-4 h-4" />
+                      <Settings className="w-4 h-4" />
                     </Link>
-                    {canManage && (
-                      <Link
-                        href="/admin"
-                        className="p-1.5 text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                        title={user.role === "manager" ? "គ្រប់គ្រងផលិតផល" : "គ្រប់គ្រង"}
-                      >
-                        <Settings className="w-4 h-4" />
-                      </Link>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => app.auth.logout()}
-                      className="p-1.5 text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                      title="ចាកចេញ"
-                    >
-                      <LogOut className="w-4 h-4" />
-                    </button>
-                  </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => app.auth.logout()}
+                    className="p-1.5 text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                    title="ចាកចេញ"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
                 </div>
-                <GlobalSearch />
               </div>
               {/* Desktop Layout: Horizontal */}
               <div className="hidden sm:flex items-center justify-between gap-2 sm:gap-4">
@@ -83,9 +79,6 @@ export default function AppShell({ children }: AppShellProps) {
                 >
                   MeyMey Sport
                 </Link>
-                <div className="flex-1 max-w-md mx-2 sm:mx-4">
-                  <GlobalSearch />
-                </div>
                 <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
                   <ThemeToggle />
                   <Link
