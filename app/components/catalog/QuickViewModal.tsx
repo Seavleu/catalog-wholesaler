@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, ChevronLeft, ChevronRight, ArrowRight, Layers, Camera, Send, MessageCircle } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Package, ChevronLeft, ChevronRight, ArrowRight, Layers, Camera, Send, MessageCircle, Download, CheckSquare, Square } from 'lucide-react';
 
 type Product = {
   id: string;
@@ -35,10 +36,93 @@ export default function QuickViewModal({
   hasPrevious,
   hasNext 
 }: QuickViewModalProps) {
+  const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
+  const [showSelection, setShowSelection] = useState(false);
+
   if (!product) return null;
 
   const catalogCount = product.catalog_images?.length || 0;
   const variantCount = product.variants?.length || 0;
+
+  const allImages = [
+    product.cover_image,
+    ...(product.catalog_images || []),
+  ].filter(Boolean) as string[];
+
+  const toggleImageSelection = (index: number) => {
+    setSelectedImages((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const selectAllImages = () => {
+    setSelectedImages(new Set(allImages.map((_, i) => i)));
+  };
+
+  const clearSelection = () => {
+    setSelectedImages(new Set());
+    setShowSelection(false);
+  };
+
+  const downloadImage = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error("Failed to download image:", err);
+    }
+  };
+
+  const downloadSelectedImages = async () => {
+    if (selectedImages.size === 0) return;
+    
+    const selectedArray = Array.from(selectedImages).sort((a, b) => a - b);
+    
+    for (let i = 0; i < selectedArray.length; i++) {
+      const index = selectedArray[i];
+      const imageUrl = allImages[index];
+      const urlParts = imageUrl.split("/");
+      const originalFilename = urlParts[urlParts.length - 1] || `image-${index + 1}`;
+      const filename = `${product.name?.replace(/[^a-zA-Z0-9]/g, "_") || "product"}_${index + 1}_${originalFilename}`;
+      
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+      
+      await downloadImage(imageUrl, filename);
+    }
+    
+    clearSelection();
+  };
+
+  const downloadAllImages = async () => {
+    for (let i = 0; i < allImages.length; i++) {
+      const imageUrl = allImages[i];
+      const urlParts = imageUrl.split("/");
+      const originalFilename = urlParts[urlParts.length - 1] || `image-${i + 1}`;
+      const filename = `${product.name?.replace(/[^a-zA-Z0-9]/g, "_") || "product"}_${i + 1}_${originalFilename}`;
+      
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+      
+      await downloadImage(imageUrl, filename);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -113,18 +197,83 @@ export default function QuickViewModal({
                 <p className="text-sm text-muted-foreground mt-5 p-3 bg-muted rounded-xl border border-border">{product.notes}</p>
               )}
 
-              {catalogCount > 0 && (
-                <div className="mt-5">
-                  <p className="text-sm font-medium text-muted-foreground mb-2">រូបភាពមើលមុន</p>
+              {/* Image Gallery with Download */}
+              {allImages.length > 0 && (
+                <div className="mt-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-muted-foreground">រូបភាព</p>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant={showSelection ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          setShowSelection(!showSelection);
+                          if (!showSelection) {
+                            selectAllImages();
+                          } else {
+                            clearSelection();
+                          }
+                        }}
+                        className="gap-1.5 h-8 text-xs"
+                      >
+                        {showSelection ? (
+                          <>
+                            <CheckSquare className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">បិទ</span>
+                          </>
+                        ) : (
+                          <>
+                            <Square className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">ជ្រើស</span>
+                          </>
+                        )}
+                      </Button>
+                      {showSelection && selectedImages.size > 0 ? (
+                        <Button
+                          size="sm"
+                          onClick={downloadSelectedImages}
+                          className="gap-1.5 h-8 text-xs"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">ទាញយក</span>
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={downloadAllImages}
+                          className="gap-1.5 h-8 text-xs"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">ទាំងអស់</span>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
                   <div className="flex gap-2 flex-wrap">
-                    {product.catalog_images?.slice(0, 5).map((img, i) => (
-                      <div key={i} className="w-14 h-14 rounded-lg overflow-hidden border-2 border-border hover:border-primary transition-colors">
-                        <img src={img} alt="" className="w-full h-full object-cover" />
+                    {allImages.slice(0, 8).map((img, i) => (
+                      <div key={i} className="relative">
+                        {showSelection && (
+                          <div className="absolute top-1 right-1 z-10">
+                            <Checkbox
+                              checked={selectedImages.has(i)}
+                              onCheckedChange={() => toggleImageSelection(i)}
+                              className="bg-background border-2 w-4 h-4"
+                            />
+                          </div>
+                        )}
+                        <div className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-colors ${
+                          showSelection && selectedImages.has(i)
+                            ? "border-primary ring-2 ring-primary"
+                            : "border-border hover:border-primary"
+                        }`}>
+                          <img src={img} alt="" className="w-full h-full object-cover" />
+                        </div>
                       </div>
                     ))}
-                    {catalogCount > 5 && (
-                      <div className="w-14 h-14 rounded-lg bg-muted flex items-center justify-center text-sm font-semibold text-muted-foreground border-2 border-border">
-                        +{catalogCount - 5}
+                    {allImages.length > 8 && (
+                      <div className="w-14 h-14 rounded-lg bg-muted flex items-center justify-center text-xs font-semibold text-muted-foreground border-2 border-border">
+                        +{allImages.length - 8}
                       </div>
                     )}
                   </div>

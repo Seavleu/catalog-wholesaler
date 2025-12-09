@@ -15,7 +15,11 @@ import {
   Camera,
   Send,
   MessageCircle,
+  Download,
+  CheckSquare,
+  Square,
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { app, ProductEntity } from "@/app/api/appClient";
 import RelatedProducts from "@/app/components/catalog/RelatedProducts";
 import ImageMagnifier from "@/app/components/catalog/ImageMagnifier";
@@ -29,6 +33,8 @@ function ProductDetailContent() {
   const [loading, setLoading] = useState(true);
   const [magnifierOpen, setMagnifierOpen] = useState(false);
   const [magnifierIndex, setMagnifierIndex] = useState(0);
+  const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
+  const [showSelection, setShowSelection] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -81,6 +87,83 @@ function ProductDetailContent() {
     ...(product.catalog_images || []),
   ].filter(Boolean) as string[];
 
+  const toggleImageSelection = (index: number) => {
+    setSelectedImages((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const selectAllImages = () => {
+    setSelectedImages(new Set(allImages.map((_, i) => i)));
+  };
+
+  const clearSelection = () => {
+    setSelectedImages(new Set());
+    setShowSelection(false);
+  };
+
+  const downloadImage = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error("Failed to download image:", err);
+    }
+  };
+
+  const downloadSelectedImages = async () => {
+    if (selectedImages.size === 0) return;
+    
+    const selectedArray = Array.from(selectedImages).sort((a, b) => a - b);
+    
+    for (let i = 0; i < selectedArray.length; i++) {
+      const index = selectedArray[i];
+      const imageUrl = allImages[index];
+      const urlParts = imageUrl.split("/");
+      const originalFilename = urlParts[urlParts.length - 1] || `image-${index + 1}`;
+      const filename = `${product.name?.replace(/[^a-zA-Z0-9]/g, "_") || "product"}_${index + 1}_${originalFilename}`;
+      
+      // Add a small delay between downloads to avoid browser blocking
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+      
+      await downloadImage(imageUrl, filename);
+    }
+    
+    clearSelection();
+  };
+
+  const downloadAllImages = async () => {
+    for (let i = 0; i < allImages.length; i++) {
+      const imageUrl = allImages[i];
+      const urlParts = imageUrl.split("/");
+      const originalFilename = urlParts[urlParts.length - 1] || `image-${i + 1}`;
+      const filename = `${product.name?.replace(/[^a-zA-Z0-9]/g, "_") || "product"}_${i + 1}_${originalFilename}`;
+      
+      // Add a small delay between downloads to avoid browser blocking
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+      
+      await downloadImage(imageUrl, filename);
+    }
+  };
+
   const stockLabel = {
     in_stock: { text: "មានស្តុក", color: "bg-green-100 text-green-700" },
     low_stock: { text: "ស្តុកតិច", color: "bg-yellow-100 text-yellow-700" },
@@ -107,11 +190,73 @@ function ProductDetailContent() {
       <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
         {/* Images */}
         <div className="space-y-4">
+          {/* Download Controls */}
+          <div className="flex items-center justify-between gap-2 p-3 bg-card rounded-lg border border-border">
+            <div className="flex items-center gap-2">
+              <Button
+                variant={showSelection ? "default" : "outline"}
+                size="sm"
+                onClick={() => {
+                  setShowSelection(!showSelection);
+                  if (!showSelection) {
+                    selectAllImages();
+                  } else {
+                    clearSelection();
+                  }
+                }}
+                className="gap-2"
+              >
+                {showSelection ? (
+                  <>
+                    <CheckSquare className="w-4 h-4" />
+                    <span className="hidden sm:inline">បិទការជ្រើសរើស</span>
+                  </>
+                ) : (
+                  <>
+                    <Square className="w-4 h-4" />
+                    <span className="hidden sm:inline">ជ្រើសរើសរូបភាព</span>
+                  </>
+                )}
+              </Button>
+              {showSelection && selectedImages.size > 0 && (
+                <span className="text-sm text-muted-foreground">
+                  {selectedImages.size} / {allImages.length} ត្រូវបានជ្រើសរើស
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              {showSelection && selectedImages.size > 0 ? (
+                <Button
+                  size="sm"
+                  onClick={downloadSelectedImages}
+                  className="gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">ទាញយកដែលជ្រើស</span>
+                  <span className="sm:hidden">ទាញយក</span>
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={downloadAllImages}
+                  className="gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">ទាញយកទាំងអស់</span>
+                  <span className="sm:hidden">ទាញយក</span>
+                </Button>
+              )}
+            </div>
+          </div>
+
           <div
             className="aspect-square bg-muted rounded-2xl overflow-hidden cursor-zoom-in"
             onClick={() => {
-              setMagnifierIndex(0);
-              setMagnifierOpen(true);
+              if (!showSelection) {
+                setMagnifierIndex(0);
+                setMagnifierOpen(true);
+              }
             }}
           >
             {product.cover_image ? (
@@ -129,23 +274,46 @@ function ProductDetailContent() {
 
           {/* Thumbnails */}
           {allImages.length > 1 && (
-            <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 -mx-3 sm:mx-0 px-3 sm:px-0">
-              {allImages.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setMagnifierIndex(i);
-                    setMagnifierOpen(true);
-                  }}
-                  className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 border-border hover:border-primary transition-colors min-h-[64px] sm:min-h-0"
-                >
-                  <img
-                    src={img}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
+            <div className="space-y-3">
+              <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 -mx-3 sm:mx-0 px-3 sm:px-0">
+                {allImages.map((img, i) => (
+                  <div
+                    key={i}
+                    className="relative flex-shrink-0"
+                  >
+                    {showSelection && (
+                      <div className="absolute top-2 right-2 z-10">
+                        <Checkbox
+                          checked={selectedImages.has(i)}
+                          onCheckedChange={() => toggleImageSelection(i)}
+                          className="bg-background border-2"
+                        />
+                      </div>
+                    )}
+                    <button
+                      onClick={() => {
+                        if (showSelection) {
+                          toggleImageSelection(i);
+                        } else {
+                          setMagnifierIndex(i);
+                          setMagnifierOpen(true);
+                        }
+                      }}
+                      className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-colors min-h-[64px] sm:min-h-0 ${
+                        showSelection && selectedImages.has(i)
+                          ? "border-primary ring-2 ring-primary"
+                          : "border-border hover:border-primary"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
