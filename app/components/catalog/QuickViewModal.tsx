@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, X, ChevronLeft, ChevronRight, ArrowRight, Layers, Camera, Send, MessageCircle } from 'lucide-react';
+import { Package, ChevronLeft, ChevronRight, ArrowRight, Layers, Camera, Send, MessageCircle } from 'lucide-react';
 
 type Product = {
   id: string;
@@ -93,13 +93,6 @@ export default function QuickViewModal({
 
           {/* Details Section */}
           <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col bg-card">
-            <button 
-              onClick={onClose}
-              className="absolute top-4 right-4 p-2 hover:bg-muted rounded-full transition-colors"
-            >
-              <X className="w-5 h-5 text-muted-foreground" />
-            </button>
-
             <div className="flex-1">
               <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">{product.brand}</p>
               <h2 className="text-2xl font-bold text-foreground mt-1 leading-tight">{product.name}</h2>
