@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   ShoppingBag,
@@ -15,8 +16,10 @@ import {
 import { app, ProductEntity } from "@/app/api/appClient";
 
 export default function Welcom() {
+  const router = useRouter();
   const [featuredProducts, setFeaturedProducts] = useState<ProductEntity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [checkingAuth, setCheckingAuth] = useState(false);
 
   useEffect(() => {
     async function loadFeatured() {
@@ -64,7 +67,7 @@ export default function Welcom() {
                     2
                   </div>
                   <p>
-                    <strong className="text-gray-900">ចម្រៀង/តម្រង:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកឬតម្រងតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
+                    <strong className="text-gray-900">ស្វែងរក/តម្រង:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកឬតម្រងតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -88,16 +91,30 @@ export default function Welcom() {
           </div>
 
           <div className="pt-2">
-            <Link href="/catalog" className="block w-full sm:w-auto">
-              <Button
-                size="lg"
-                className="w-full sm:w-auto h-14 px-8 sm:px-10 text-base rounded-md bg-black hover:bg-gray-800 text-white font-medium"
-              >
-                <ShoppingBag className="w-5 h-5 mr-2" />
-                មើលផលិតផល
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              onClick={async () => {
+                setCheckingAuth(true);
+                try {
+                  const user = await app.auth.me();
+                  if (user) {
+                    router.push("/catalog");
+                  } else {
+                    router.push("/login");
+                  }
+                } catch (err) {
+                  router.push("/login");
+                } finally {
+                  setCheckingAuth(false);
+                }
+              }}
+              disabled={checkingAuth}
+              className="w-full sm:w-auto h-14 px-8 sm:px-10 text-base rounded-md bg-black hover:bg-gray-800 text-white font-medium disabled:opacity-50"
+            >
+              <ShoppingBag className="w-5 h-5 mr-2" />
+              {checkingAuth ? "កំពុងពិនិត្យ..." : "មើលផលិតផល"}
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
           </div>
         </div>
       </section>
@@ -152,15 +169,29 @@ export default function Welcom() {
             </div>
 
             <div className="text-center">
-              <Link href="/catalog" className="inline-block w-full sm:w-auto">
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto h-12 px-6 sm:px-8 text-base gap-2 border-2 border-gray-300 hover:border-gray-900 font-medium"
-                >
-                  មើលផលិតផលទាំងអស់
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                onClick={async () => {
+                  setCheckingAuth(true);
+                  try {
+                    const user = await app.auth.me();
+                    if (user) {
+                      router.push("/catalog");
+                    } else {
+                      router.push("/login");
+                    }
+                  } catch (err) {
+                    router.push("/login");
+                  } finally {
+                    setCheckingAuth(false);
+                  }
+                }}
+                disabled={checkingAuth}
+                className="w-full sm:w-auto h-12 px-6 sm:px-8 text-base gap-2 border-2 border-gray-300 hover:border-gray-900 font-medium disabled:opacity-50"
+              >
+                {checkingAuth ? "កំពុងពិនិត្យ..." : "មើលផលិតផលទាំងអស់"}
+                <ArrowRight className="w-5 h-5" />
+              </Button>
             </div>
           </section>
         </>
