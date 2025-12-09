@@ -19,10 +19,10 @@ export default function ThemeToggle() {
       <Button
         variant="ghost"
         size="icon"
-        className="h-9 w-9"
+        className="h-9 w-9 text-primary-foreground"
         disabled
       >
-        <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
+        <Moon className="h-5 w-5 sm:h-5 sm:w-5" />
         <span className="sr-only">Toggle theme</span>
       </Button>
     );
@@ -33,13 +33,13 @@ export default function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="h-9 w-9 text-gray-300 hover:text-white dark:text-gray-300 dark:hover:text-primary transition-colors"
+      className="h-9 w-9 text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10 transition-all"
       title={theme === "light" ? "ប្ដូរទៅរបៀបងងឹត" : "ប្ដូរទៅរបៀបស្វាយ"}
     >
       {theme === "light" ? (
-        <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
+        <Moon className="h-5 w-5 sm:h-5 sm:w-5" />
       ) : (
-        <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
+        <Sun className="h-5 w-5 sm:h-5 sm:w-5" />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>
