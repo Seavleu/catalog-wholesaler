@@ -3,7 +3,7 @@
 import { ProductEntity } from "@/lib/types";
 import { getBrowserSupabase } from "@/lib/supabaseClient";
 import { UserEntity } from "@/lib/types";
-import { normalizePhoneToE164 } from "@/lib/phoneUtils";
+import { normalizePhoneToE164, getPhoneLoginFormats } from "@/lib/phoneUtils";
 
 type UserCreatePayload = Partial<UserEntity> & { password?: string };
 
@@ -22,27 +22,76 @@ export const app = {
       const supabase = getBrowserSupabase();
       if (!supabase) throw new Error("Supabase env vars missing");
       
-      // Use email if provided, otherwise use phone (normalize phone to E.164)
-      const { data, error } = await supabase.auth.signInWithPassword({
-        ...(email ? { email } : { phone: normalizePhoneToE164(phone!) }),
-        password,
-      });
-      if (error) throw error;
-      if (!data.user) return null;
-      const role =
-        (data.user.user_metadata?.role as UserEntity["role"]) || "user";
-      return {
-        id: data.user.id,
-        email: data.user.email || undefined,
-        phone: data.user.phone || undefined,
-        full_name:
-          (data.user.user_metadata?.full_name as string | undefined) ||
-          data.user.email ||
-          data.user.phone ||
-          undefined,
-        role,
-        created_date: data.user.created_at,
-      };
+      // Use email if provided
+      if (email) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+        if (!data.user) return null;
+        const role =
+          (data.user.user_metadata?.role as UserEntity["role"]) || "user";
+        return {
+          id: data.user.id,
+          email: data.user.email || undefined,
+          phone: data.user.phone || undefined,
+          full_name:
+            (data.user.user_metadata?.full_name as string | undefined) ||
+            data.user.email ||
+            data.user.phone ||
+            undefined,
+          role,
+          created_date: data.user.created_at,
+        };
+      }
+      
+      // For phone login, try multiple formats to allow login with local format
+      if (phone) {
+        const phoneFormats = getPhoneLoginFormats(phone);
+        let lastError: any = null;
+        
+        // Try each phone format until one works
+        for (const phoneFormat of phoneFormats) {
+          try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+              phone: phoneFormat,
+              password,
+            });
+            
+            if (!error && data.user) {
+              const role =
+                (data.user.user_metadata?.role as UserEntity["role"]) || "user";
+              return {
+                id: data.user.id,
+                email: data.user.email || undefined,
+                phone: data.user.phone || undefined,
+                full_name:
+                  (data.user.user_metadata?.full_name as string | undefined) ||
+                  data.user.email ||
+                  data.user.phone ||
+                  undefined,
+                role,
+                created_date: data.user.created_at,
+              };
+            }
+            
+            // Save error for later if this was the last attempt
+            if (error) {
+              lastError = error;
+            }
+          } catch (err) {
+            lastError = err;
+          }
+        }
+        
+        // If all formats failed, throw the last error
+        if (lastError) {
+          throw lastError;
+        }
+      }
+      
+      return null;
     },
     me: async (): Promise<UserEntity | null> => {
       const supabase = getBrowserSupabase();

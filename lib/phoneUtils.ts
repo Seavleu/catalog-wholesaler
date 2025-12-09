@@ -35,6 +35,45 @@ export function normalizePhoneToE164(phone: string): string {
 }
 
 /**
+ * Generates all possible phone number formats for login attempts
+ * This allows users to login with local format (e.g., "092862336") 
+ * even though the phone is stored in E.164 format (e.g., "+85592862336")
+ * @param phone - Phone number in any format
+ * @returns Array of possible phone formats to try
+ */
+export function getPhoneLoginFormats(phone: string): string[] {
+  if (!phone) return [];
+  
+  const formats: string[] = [];
+  
+  // Remove all non-digit characters except +
+  let cleaned = phone.replace(/[^\d+]/g, "");
+  
+  // If already in E.164 format (starts with +), add it
+  if (cleaned.startsWith("+")) {
+    formats.push(cleaned);
+  }
+  
+  // If starts with 855 (without +), try with +
+  if (cleaned.startsWith("855")) {
+    formats.push(`+${cleaned}`);
+  }
+  
+  // If starts with 0, try replacing with +855
+  if (cleaned.startsWith("0")) {
+    formats.push(`+855${cleaned.slice(1)}`);
+  }
+  
+  // Also try the cleaned number with +855 prefix
+  if (!cleaned.startsWith("+") && !cleaned.startsWith("855") && !cleaned.startsWith("0")) {
+    formats.push(`+855${cleaned}`);
+  }
+  
+  // Remove duplicates and return
+  return [...new Set(formats)];
+}
+
+/**
  * Validates if a phone number is in E.164 format
  */
 export function isValidE164(phone: string): boolean {
