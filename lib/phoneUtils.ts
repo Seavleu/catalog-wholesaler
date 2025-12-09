@@ -36,7 +36,7 @@ export function normalizePhoneToE164(phone: string): string {
 
 /**
  * Generates all possible phone number formats for login attempts
- * This allows users to login with local format (e.g., "092862336") 
+ * This allows users to login with local format (e.g., "092862336" or "012345678") 
  * even though the phone is stored in E.164 format (e.g., "+85592862336")
  * @param phone - Phone number in any format
  * @returns Array of possible phone formats to try
@@ -52,21 +52,40 @@ export function getPhoneLoginFormats(phone: string): string[] {
   // If already in E.164 format (starts with +), add it
   if (cleaned.startsWith("+")) {
     formats.push(cleaned);
+    return formats; // Already in correct format, no need to try others
   }
   
-  // If starts with 855 (without +), try with +
+  // If starts with country code 855 (without +), try with +
   if (cleaned.startsWith("855")) {
     formats.push(`+${cleaned}`);
+    // Also try without the country code (in case it's stored as local format)
+    const withoutCountryCode = cleaned.slice(3);
+    if (withoutCountryCode.length >= 8) {
+      formats.push(`+855${withoutCountryCode}`);
+      formats.push(`0${withoutCountryCode}`);
+    }
   }
   
-  // If starts with 0, try replacing with +855
+  // If starts with 0 (local Cambodian format like 012345678), try multiple formats
   if (cleaned.startsWith("0")) {
-    formats.push(`+855${cleaned.slice(1)}`);
+    const withoutZero = cleaned.slice(1);
+    // Try with +855 prefix (most common - how it's stored in Supabase)
+    formats.push(`+855${withoutZero}`);
+    // Also try with just the number (in case stored without country code)
+    formats.push(cleaned);
+    // Try with 855 prefix (without +)
+    formats.push(`855${withoutZero}`);
   }
   
-  // Also try the cleaned number with +855 prefix
+  // If it's a 9-digit number (typical Cambodian mobile without leading 0)
+  // like "12345678" or "92862336"
   if (!cleaned.startsWith("+") && !cleaned.startsWith("855") && !cleaned.startsWith("0")) {
+    // Try with +855 prefix
     formats.push(`+855${cleaned}`);
+    // Try with 0 prefix (local format)
+    formats.push(`0${cleaned}`);
+    // Try with 855 prefix (without +)
+    formats.push(`855${cleaned}`);
   }
   
   // Remove duplicates and return

@@ -15,23 +15,23 @@ export default function StoreInfo() {
   const facebookUrl = "https://www.facebook.com/meymey1789/";
 
   return (
-    <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200">
+    <div className="bg-muted/50 border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid md:grid-cols-3 gap-6">
           {/* Phone Numbers */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                 <Phone className="w-5 h-5 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900">ទូរស័ព្ទទំនាក់ទំនង</h3>
+              <h3 className="font-semibold text-foreground">ទូរស័ព្ទទំនាក់ទំនង</h3>
             </div>
             <div className="space-y-2">
               {phoneNumbers.map((phone, index) => (
                 <a
                   key={index}
                   href={phone.link}
-                  className="block text-gray-700 hover:text-green-600 transition-colors font-medium"
+                  className="block text-foreground hover:text-green-600 transition-colors font-medium"
                 >
                   {phone.number}
                 </a>
@@ -40,14 +40,14 @@ export default function StoreInfo() {
           </div>
 
           {/* Location */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                 <MapPin className="w-5 h-5 text-blue-600" />
               </div>
-              <h3 className="font-semibold text-gray-900">ទីតាំង</h3>
+              <h3 className="font-semibold text-foreground">ទីតាំង</h3>
             </div>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-muted-foreground text-sm mb-4">
               មើលទីតាំងហាងរបស់យើងនៅលើ Google Maps
             </p>
             <a
@@ -62,14 +62,14 @@ export default function StoreInfo() {
           </div>
 
           {/* Facebook */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                 <Facebook className="w-5 h-5 text-blue-600" />
               </div>
-              <h3 className="font-semibold text-gray-900">Facebook</h3>
+              <h3 className="font-semibold text-foreground">Facebook</h3>
             </div>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-muted-foreground text-sm mb-4">
               ទាក់ទងយើងតាមរយៈ Facebook
             </p>
             <a

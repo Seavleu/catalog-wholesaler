@@ -78,35 +78,35 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
   const hasNext = quickViewIndex < visibleProducts.length - 1;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Header Section */}
         <header className="space-y-2 sm:space-y-3">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight">
             កាតាឡុកផលិតផល
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-muted-foreground text-sm sm:text-base">
             រុករកផលិតផលកីឡាទាំងអស់របស់យើង
           </p>
           {visibleProducts.length > 0 && (
-            <p className="text-xs sm:text-sm text-gray-500">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               រកឃើញ {visibleProducts.length} {visibleProducts.length === 1 ? 'ផលិតផល' : 'ផលិតផល'}
             </p>
           )}
         </header>
 
         {/* Telegram Instructions Banner */}
-        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm">
+        <div className="bg-primary/10 border border-primary/20 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
             <div className="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 w-full">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
+                <h3 className="font-semibold text-foreground text-sm sm:text-base mb-1">
                   ចង់បញ្ជាទិញផលិតផល?
                 </h3>
-                <p className="text-gray-700 text-xs sm:text-sm">
+                <p className="text-muted-foreground text-xs sm:text-sm">
                   សូមថតរូបផលិតផលដែលអ្នកចង់បញ្ជាទិញ និងផ្ញើមកកាន់ Telegram របស់យើង
                 </p>
               </div>
@@ -125,7 +125,7 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
         </div>
 
         {/* Filters Section */}
-        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-3 sm:p-4 md:p-6">
+        <div className="bg-card rounded-lg sm:rounded-xl shadow-sm border border-border p-3 sm:p-4 md:p-6">
           <CatalogFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -140,19 +140,19 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
 
         {/* Products Grid */}
       {visibleProducts.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="text-center py-16 bg-card rounded-xl shadow-sm border border-border">
             <div className="max-w-md mx-auto space-y-4">
-              <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   រកមិនឃើញផលិតផល
                 </h3>
-                <p className="text-gray-500 text-sm mb-4">
-                  សូមសាកល្បងតម្រងផ្សេង ឬលុបតម្រងដើម្បីមើលផលិតផលទាំងអស់
+                <p className="text-muted-foreground text-sm mb-4">
+                  សូមសាកល្បងប្រអប់តម្រងស្វែងរកផ្សេង ឬលុបតម្រងដើម្បីមើលផលិតផលទាំងអស់
                 </p>
                 {(searchQuery || selectedCategory !== "All" || selectedBrand !== "All") && (
                   <button

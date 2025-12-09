@@ -39,51 +39,51 @@ export default function Welcom() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Hero Section - Compact */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="space-y-6">
           <div className="space-y-4">
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
               រុករកផលិតផលកីឡាដែលមានគុណភាពខ្ពស់ពីម៉ាកល្បីៗ
             </p>
             
             {/* Instructions */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 space-y-4">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+            <div className="bg-card border border-border rounded-lg p-6 space-y-4">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-4">
                 របៀបប្រើប្រាស់
               </h2>
-              <div className="space-y-3 text-sm sm:text-base text-gray-700">
+              <div className="space-y-3 text-sm sm:text-base text-muted-foreground">
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold mt-0.5">
                     1
                   </div>
                   <p>
-                    <strong className="text-gray-900">រុករកផលិតផល:</strong> ចុចលើប៊ូតុង "មើលផលិតផល" ឬប្រើប្រាស់ម៉ឺនុយខាងលើដើម្បីរុករកកាតាឡុកផលិតផលទាំងអស់
+                    <strong className="text-foreground">រុករកផលិតផល:</strong> ចុចលើប៊ូតុង "មើលផលិតផល" ឬប្រើប្រាស់ម៉ឺនុយខាងលើដើម្បីរុករកកាតាឡុកផលិតផលទាំងអស់
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold mt-0.5">
                     2
                   </div>
                   <p>
-                    <strong className="text-gray-900">ស្វែងរក/តម្រង:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកឬតម្រងតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
+                    <strong className="text-foreground">ស្វែងរក:</strong> ប្រើប្រាស់ប្រអប់ស្វែងរកតាមម៉ាក និងប្រភេទដើម្បីស្វែងរកផលិតផលដែលអ្នកចង់បាន
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold mt-0.5">
                     3
                   </div>
                   <p>
-                    <strong className="text-gray-900">មើលព័ត៌មានលម្អិត:</strong> ចុចលើផលិតផលណាមួយដើម្បីមើលរូបភាព ទំហំ និងព័ត៌មានលម្អិតផ្សេងៗ
+                    <strong className="text-foreground">មើលព័ត៌មានលម្អិត:</strong> ចុចលើផលិតផលណាមួយដើម្បីមើលរូបភាព ទំហំ និងព័ត៌មានលម្អិតផ្សេងៗ
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-semibold mt-0.5">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold mt-0.5">
                     4
                   </div>
                   <p>
-                    <strong className="text-gray-900">ទំនាក់ទំនង:</strong> សម្រាប់ការបញ្ជាទិញ ឬសំណួរ សូមទំនាក់ទំនងតាមទូរស័ព្ទ ឬ Facebook ដែលមាននៅខាងក្រោម
+                    <strong className="text-foreground">ទំនាក់ទំនង:</strong> សម្រាប់ការបញ្ជាទិញ ឬសំណួរ សូមទំនាក់ទំនងតាមទូរស័ព្ទ ឬ Facebook ដែលមាននៅខាងក្រោម
                   </p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function Welcom() {
                 }
               }}
               disabled={checkingAuth}
-              className="w-full sm:w-auto h-14 px-8 sm:px-10 text-base rounded-md bg-black hover:bg-gray-800 text-white font-medium disabled:opacity-50"
+              className="w-full sm:w-auto h-14 px-8 sm:px-10 text-base rounded-md font-medium disabled:opacity-50"
             >
               <ShoppingBag className="w-5 h-5 mr-2" />
               {checkingAuth ? "កំពុងពិនិត្យ..." : "មើលផលិតផល"}
@@ -123,15 +123,15 @@ export default function Welcom() {
       {!loading && featuredProducts.length > 0 && (
         <>
           <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <div className="border-t border-gray-200"></div>
+            <div className="border-t border-border"></div>
           </div>
 
           <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
             <div className="mb-8">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-1">
+              <h2 className="text-2xl sm:text-3xl font-semibold text-foreground mb-1">
                 ផលិតផលពេញនិយម
               </h2>
-              <div className="w-16 h-0.5 bg-gray-900"></div>
+              <div className="w-16 h-0.5 bg-primary"></div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 mb-8">
@@ -142,7 +142,7 @@ export default function Welcom() {
                   className="group"
                 >
                   <div className="space-y-2">
-                    <div className="aspect-square bg-gray-50 overflow-hidden rounded-md">
+                    <div className="aspect-square bg-muted overflow-hidden rounded-md">
                       {product.cover_image ? (
                         <img
                           src={product.cover_image}
@@ -151,15 +151,15 @@ export default function Welcom() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Package className="w-10 h-10 text-gray-300" />
+                          <Package className="w-10 h-10 text-muted-foreground" />
                         </div>
                       )}
                     </div>
                     <div className="space-y-1">
-                      <p className="text-xs sm:text-sm text-gray-500 font-medium">
+                      <p className="text-xs sm:text-sm text-muted-foreground font-medium">
                         {product.brand}
                       </p>
-                      <h3 className="text-sm sm:text-base text-gray-900 line-clamp-2 font-medium leading-snug">
+                      <h3 className="text-sm sm:text-base text-foreground line-clamp-2 font-medium leading-snug">
                         {product.name}
                       </h3>
                     </div>
@@ -187,7 +187,7 @@ export default function Welcom() {
                   }
                 }}
                 disabled={checkingAuth}
-                className="w-full sm:w-auto h-12 px-6 sm:px-8 text-base gap-2 border-2 border-gray-300 hover:border-gray-900 font-medium disabled:opacity-50"
+                className="w-full sm:w-auto h-12 px-6 sm:px-8 text-base gap-2 font-medium disabled:opacity-50"
               >
                 {checkingAuth ? "កំពុងពិនិត្យ..." : "មើលផលិតផលទាំងអស់"}
                 <ArrowRight className="w-5 h-5" />
@@ -199,18 +199,18 @@ export default function Welcom() {
 
       {/* Contact Section - Compact */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="border-t border-gray-200"></div>
+        <div className="border-t border-border"></div>
       </div>
 
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-1">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground mb-1">
             ទំនាក់ទំនង
           </h2>
-          <div className="w-16 h-0.5 bg-gray-900"></div>
+          <div className="w-12 sm:w-16 h-0.5 bg-primary"></div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
           <ContactItem
             icon={<Phone className="w-6 h-6" />}
             title="ទូរស័ព្ទទំនាក់ទំនង"
@@ -256,21 +256,21 @@ type ContactItemProps = {
 
 function ContactItem({ icon, title, items }: ContactItemProps) {
   return (
-    <div className="space-y-4">
-      <div className="text-gray-900">{icon}</div>
-      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{title}</h3>
-      <div className="space-y-3">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="text-foreground">{icon}</div>
+      <h3 className="text-base sm:text-lg md:text-xl font-semibold text-foreground">{title}</h3>
+      <div className="space-y-2 sm:space-y-3">
         {items.map((item, index) => (
           <a
             key={index}
             href={item.link}
             target={item.external ? "_blank" : undefined}
             rel={item.external ? "noopener noreferrer" : undefined}
-            className="block text-base text-gray-600 hover:text-gray-900 transition-colors group font-medium"
+            className="block text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors group font-medium"
           >
             {item.text}
             {item.external && (
-              <ExternalLink className="w-4 h-4 inline-block ml-2 opacity-70 group-hover:opacity-100 transition-opacity" />
+              <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 inline-block ml-2 opacity-70 group-hover:opacity-100 transition-opacity" />
             )}
           </a>
         ))}

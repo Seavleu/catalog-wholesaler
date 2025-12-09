@@ -25,10 +25,10 @@ export default function RelatedProducts({ products, title, currentProductId }: R
   if (displayProducts.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-2xl border shadow-sm p-6">
+    <div className="bg-card rounded-2xl border border-border shadow-sm p-6">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-        <span className="text-base text-gray-500">{displayProducts.length} ផលិតផល</span>
+        <h3 className="text-xl font-semibold text-foreground">{title}</h3>
+        <span className="text-base text-muted-foreground">{displayProducts.length} ផលិតផល</span>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 stagger-children">
         {displayProducts.map(product => (
@@ -37,7 +37,7 @@ export default function RelatedProducts({ products, title, currentProductId }: R
             href={`/product-detail?id=${product.id}`}
             className="group"
           >
-            <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden mb-2 border card-hover">
+            <div className="aspect-square bg-muted rounded-xl overflow-hidden mb-2 border border-border card-hover">
               {product.cover_image ? (
                 <img 
                   src={product.cover_image} 
@@ -47,12 +47,12 @@ export default function RelatedProducts({ products, title, currentProductId }: R
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Package className="w-8 h-8 text-gray-300" />
+                  <Package className="w-8 h-8 text-muted-foreground" />
                 </div>
               )}
             </div>
-            <p className="text-xs text-gray-500 font-medium">{product.brand}</p>
-            <p className="text-sm font-medium text-gray-900 truncate group-hover:text-gray-600 transition-colors">{product.name}</p>
+            <p className="text-xs text-muted-foreground font-medium">{product.brand}</p>
+            <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">{product.name}</p>
           </Link>
         ))}
       </div>

@@ -60,7 +60,7 @@ const ROLE_LABELS: Record<string, string> = {
 const ROLE_COLORS: Record<string, string> = {
   admin: "bg-purple-100 text-purple-700",
   manager: "bg-blue-100 text-blue-700",
-  user: "bg-gray-100 text-gray-700",
+  user: "bg-muted text-muted-foreground",
 };
 
 type NewUserForm = {
@@ -158,7 +158,7 @@ export default function UserManagement() {
   return (
     <div className="space-y-6">
       <Card className="rounded-2xl shadow-sm border">
-        <CardHeader className="flex flex-row items-center justify-between border-b bg-gray-50">
+        <CardHeader className="flex flex-row items-center justify-between border-b bg-muted/50">
           <CardTitle className="text-xl flex items-center gap-3">
             <div className="p-2 bg-blue-500 rounded-xl">
               <User className="w-6 h-6 text-white" />
@@ -176,13 +176,13 @@ export default function UserManagement() {
         <CardContent className="p-6">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+              <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
           ) : (
-            <div className="bg-white rounded-xl border overflow-hidden">
+            <div className="bg-card rounded-xl border border-border overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gray-50">
+                  <TableRow className="bg-muted/50">
                     <TableHead className="text-base">ឈ្មោះពេញ</TableHead>
                     <TableHead className="text-base">លេខទូរស័ព្ទ</TableHead>
                     <TableHead className="text-base">តួនាទី</TableHead>
@@ -198,7 +198,7 @@ export default function UserManagement() {
                       </TableCell>
                       <TableCell className="text-base">
                         <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-gray-400" />
+                          <Phone className="w-4 h-4 text-muted-foreground" />
                           {user.phone || user.email || "-"}
                         </div>
                       </TableCell>
@@ -211,7 +211,7 @@ export default function UserManagement() {
                           {ROLE_LABELS[user.role || "user"] || ROLE_LABELS.user}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-base text-gray-500">
+                      <TableCell className="text-base text-foreground-500">
                         {user.created_date
                           ? new Date(user.created_date).toLocaleDateString(
                               "km-KH"
@@ -236,7 +236,7 @@ export default function UserManagement() {
                     <TableRow>
                       <TableCell
                         colSpan={5}
-                        className="text-center py-12 text-gray-500"
+                        className="text-center py-12 text-foreground-500"
                       >
                         រកមិនឃើញអ្នកប្រើប្រាស់។
                       </TableCell>
@@ -283,7 +283,7 @@ export default function UserManagement() {
                 placeholder="012345678"
                 className="mt-2 h-12 text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-foreground-500 mt-1">
                 បញ្ចូលលេខទូរស័ព្ទកម្ពុជា (ឧ. 092862336) - អ្នកប្រើប្រាស់អាចចូលគណនីដោយប្រើលេខទូរស័ព្ទនេះដោយផ្ទាល់
               </p>
             </div>
@@ -301,7 +301,7 @@ export default function UserManagement() {
                 placeholder="admin@meymeysport.com"
                 className="mt-2 h-12 text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-foreground-500 mt-1">
                 បញ្ចូលអ៊ីមែលសម្រាប់អ្នកគ្រប់គ្រង (Admin/Manager)
               </p>
             </div>
@@ -332,7 +332,7 @@ export default function UserManagement() {
                 placeholder="បញ្ចូលពាក្យសម្ងាត់ ឬទុកទទេដើម្បីបង្កើតដោយស្វ័យប្រវត្តិ"
                 className="mt-2 h-12 text-base"
               />
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-foreground-500 mt-2">
                 បើទុកទទេ នឹងបង្កើតពាក្យសម្ងាត់ដោយស្វ័យប្រវត្តិ
               </p>
             </div>
@@ -376,35 +376,35 @@ export default function UserManagement() {
               <div className="space-y-3 bg-white rounded-lg p-4 border border-yellow-300">
                 {createdUser?.phone && (
                   <div>
-                    <Label className="text-sm text-gray-600 flex items-center gap-2">
+                    <Label className="text-sm text-foreground-600 flex items-center gap-2">
                       <Phone className="w-4 h-4" />
                       លេខទូរស័ព្ទ
                     </Label>
-                    <p className="text-lg font-mono font-semibold text-gray-900 break-all">
+                    <p className="text-lg font-mono font-semibold text-foreground-900 break-all">
                       {createdUser.phone}
                     </p>
                   </div>
                 )}
                 {createdUser?.email && (
                   <div>
-                    <Label className="text-sm text-gray-600 flex items-center gap-2">
+                    <Label className="text-sm text-foreground-600 flex items-center gap-2">
                       <Mail className="w-4 h-4" />
                       អ៊ីមែល
                     </Label>
-                    <p className="text-lg font-mono font-semibold text-gray-900 break-all">
+                    <p className="text-lg font-mono font-semibold text-foreground-900 break-all">
                       {createdUser.email}
                     </p>
                   </div>
                 )}
                 <div>
-                  <Label className="text-sm text-gray-600">ពាក្យសម្ងាត់</Label>
-                  <p className="text-lg font-mono font-semibold text-gray-900">
+                  <Label className="text-sm text-foreground-600">ពាក្យសម្ងាត់</Label>
+                  <p className="text-lg font-mono font-semibold text-foreground-900">
                     {createdUser?.password}
                   </p>
                 </div>
                 <div>
-                  <Label className="text-sm text-gray-600">តួនាទី</Label>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <Label className="text-sm text-foreground-600">តួនាទី</Label>
+                  <p className="text-lg font-semibold text-foreground-900">
                     {ROLE_LABELS[createdUser?.role || "user"] ||
                       ROLE_LABELS.user}
                   </p>

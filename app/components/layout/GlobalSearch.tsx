@@ -66,22 +66,22 @@ export default function GlobalSearch() {
   };
 
   return (
-    <div ref={wrapperRef} className="relative flex-1 max-w-md hidden sm:block">
+    <div ref={wrapperRef} className="relative w-full sm:flex-1 sm:max-w-md">
       <div className="relative">
-        <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+        <Search className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
         <Input
           placeholder="ស្វែងរកផលិតផល..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query && setIsOpen(true)}
-          className="pl-8 sm:pl-10 pr-8 sm:pr-10 h-10 sm:h-11 text-sm sm:text-base bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:bg-gray-700 rounded-lg"
+          className="pl-8 sm:pl-10 pr-8 sm:pr-10 h-10 sm:h-11 text-sm sm:text-base bg-muted border-border text-foreground placeholder:text-muted-foreground focus:bg-muted/80 rounded-lg"
         />
         {query && (
           <button
             onClick={() => { setQuery(''); setIsOpen(false); }}
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1.5 sm:p-1 hover:bg-gray-600 rounded min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-1.5 sm:p-1 hover:bg-muted rounded min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
           >
-            <X className="w-4 h-4 text-gray-400" />
+            <X className="w-4 h-4 text-muted-foreground" />
           </button>
         )}
       </div>
@@ -90,7 +90,7 @@ export default function GlobalSearch() {
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg sm:rounded-xl shadow-2xl border overflow-hidden z-50 animate-fade-in max-h-[70vh] sm:max-h-96">
           {isLoading ? (
             <div className="p-4 flex items-center justify-center">
-              <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+              <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
             </div>
           ) : results.length > 0 ? (
             <div className="overflow-y-auto max-h-[70vh] sm:max-h-96">
@@ -99,26 +99,26 @@ export default function GlobalSearch() {
                   key={product.id}
                   href={`/product-detail?id=${product.id}`}
                   onClick={handleSelect}
-                  className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-gray-50 transition-colors border-b last:border-b-0 min-h-[60px] sm:min-h-0"
+                  className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-muted transition-colors border-b last:border-b-0 min-h-[60px] sm:min-h-0"
                 >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-muted rounded-lg overflow-hidden flex-shrink-0">
                     {product.cover_image ? (
                       <img src={product.cover_image} alt={product.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Package className="w-5 h-5 sm:w-6 sm:h-6 text-gray-300" />
+                        <Package className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm sm:text-base font-medium text-gray-900 truncate">{product.name}</p>
-                    <p className="text-xs sm:text-sm text-gray-500">{product.brand} • {product.category}</p>
+                    <p className="text-sm sm:text-base font-medium text-foreground truncate">{product.name}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{product.brand} • {product.category}</p>
                   </div>
                 </Link>
               ))}
             </div>
           ) : (
-            <div className="p-4 text-center text-gray-500 text-sm sm:text-base">
+            <div className="p-4 text-center text-muted-foreground text-sm sm:text-base">
               រកមិនឃើញផលិតផល
             </div>
           )}

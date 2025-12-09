@@ -75,16 +75,16 @@ export default function ProductTable({
   };
 
   return (
-    <div className="bg-white rounded-xl border overflow-hidden">
+    <div className="bg-card rounded-xl border border-border overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="bg-gray-50">
+          <TableRow className="bg-muted/50">
             <TableHead className="w-10">
               <Checkbox
                 checked={allSelected}
                 onCheckedChange={toggleAll}
                 className={
-                  someSelected ? "data-[state=checked]:bg-gray-400" : ""
+                  someSelected ? "data-[state=checked]:bg-muted-foreground" : ""
                 }
               />
             </TableHead>
@@ -101,8 +101,8 @@ export default function ProductTable({
           {products.map((product) => (
             <TableRow
               key={product.id}
-              className={`hover:bg-gray-50 ${
-                selectedIds.includes(product.id) ? "bg-blue-50" : ""
+              className={`hover:bg-muted/50 ${
+                selectedIds.includes(product.id) ? "bg-primary/10" : ""
               }`}
             >
               <TableCell>
@@ -112,7 +112,7 @@ export default function ProductTable({
                 />
               </TableCell>
               <TableCell>
-                <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
+                <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted">
                   {product.cover_image ? (
                     <img
                       src={product.cover_image}
@@ -121,15 +121,15 @@ export default function ProductTable({
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Package className="w-5 h-5 text-gray-300" />
+                      <Package className="w-5 h-5 text-muted-foreground" />
                     </div>
                   )}
                 </div>
               </TableCell>
               <TableCell>
                 <div>
-                  <p className="font-medium text-gray-900">{product.name}</p>
-                  <p className="text-sm text-gray-500">{product.brand}</p>
+                  <p className="font-medium text-foreground">{product.name}</p>
+                  <p className="text-sm text-muted-foreground">{product.brand}</p>
                 </div>
               </TableCell>
               <TableCell>
@@ -138,18 +138,18 @@ export default function ProductTable({
               <TableCell className="text-center">
                 <div className="flex flex-col items-center gap-1">
                   {product.sizes && product.sizes.length > 0 && (
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-muted-foreground">
                       {product.sizes.join(", ")}
                     </span>
                   )}
                   {product.colors && product.colors.length > 0 && (
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-muted-foreground">
                       {product.colors.length} ពណ៌
                     </span>
                   )}
                   {(!product.sizes || product.sizes.length === 0) &&
                     (!product.colors || product.colors.length === 0) && (
-                      <span className="text-gray-400 text-sm">—</span>
+                      <span className="text-muted-foreground text-sm">—</span>
                     )}
                 </div>
               </TableCell>
@@ -162,7 +162,7 @@ export default function ProductTable({
                       {product.restock_date &&
                         (product.stock_status === "out_of_stock" ||
                           product.stock_status === "restocking") && (
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-muted-foreground">
                             មកដល់:{" "}
                             {new Date(product.restock_date).toLocaleDateString(
                               "km-KH"
@@ -177,8 +177,8 @@ export default function ProductTable({
                 <Badge
                   className={
                     product.is_active !== false
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-100 text-gray-600"
+                      ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                      : "bg-muted text-muted-foreground"
                   }
                 >
                   {product.is_active !== false ? "បង្ហាញ" : "លាក់"}
@@ -223,7 +223,7 @@ export default function ProductTable({
           ))}
           {products.length === 0 && (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-12 text-gray-500">
+              <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
                 រកមិនឃើញផលិតផល។ បន្ថែមផលិតផលដំបូងដើម្បីចាប់ផ្តើម។
               </TableCell>
             </TableRow>

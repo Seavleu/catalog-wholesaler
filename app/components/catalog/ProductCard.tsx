@@ -25,11 +25,11 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
 
   return (
     <Card 
-      className="group overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer h-full flex flex-col"
+      className="group overflow-hidden bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer h-full flex flex-col"
       onClick={onClick}
     >
       {/* Image Section */}
-      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="relative aspect-square overflow-hidden bg-muted">
         {displayImage ? (
           <img 
             src={displayImage} 
@@ -43,7 +43,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
               if (parent) {
                 parent.innerHTML = `
                   <div class="w-full h-full flex items-center justify-center">
-                    <svg class="w-16 h-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-16 h-16 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -53,7 +53,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Package className="w-16 h-16 text-gray-300" />
+            <Package className="w-16 h-16 text-muted-foreground" />
           </div>
         )}
         
@@ -68,8 +68,8 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
 
         {/* Category Badge */}
         {product.category && (
-          <div className="absolute top-2 left-2 z-10">
-            <Badge variant="secondary" className="bg-black/70 text-white border-0 backdrop-blur-sm text-xs font-medium px-2 py-0.5">
+          <div className="absolute top-1.5 left-1.5 z-10 max-w-[40%] sm:max-w-[45%]">
+            <Badge variant="secondary" className="bg-primary/80 text-primary-foreground border-0 backdrop-blur-sm text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 truncate block">
               {product.category}
             </Badge>
           </div>
@@ -81,28 +81,28 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         {/* Brand and Name */}
         <div className="flex-1">
           {product.brand && (
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
               {product.brand}
             </p>
           )}
-          <h3 className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
+          <h3 className="font-semibold text-foreground text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
             {product.name || 'ផលិតផល'}
           </h3>
         </div>
 
         {/* Color Count */}
         {product.color_count && product.color_count > 0 && (
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             {product.color_count} {product.color_count === 1 ? 'ពណ៌' : 'ពណ៌'}
           </p>
         )}
 
         {/* Stock Status and Colors */}
-        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+        <div className="flex items-center justify-between pt-2 border-t border-border">
           {/* Stock Status Indicator */}
           <div className="flex items-center gap-1.5">
             <div className={`w-2 h-2 rounded-full ${stockStatusDisplay.color} flex-shrink-0`} />
-            <span className="text-xs font-medium text-gray-700">
+            <span className="text-xs font-medium text-muted-foreground">
               {stockStatusDisplay.label}
             </span>
           </div>
@@ -120,15 +120,15 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
                 return (
                   <div 
                     key={i}
-                    className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
+                    className="w-4 h-4 rounded-full border-2 border-background shadow-sm"
                     style={isValidColor ? { backgroundColor: colorValue } : { backgroundColor: '#ccc' }}
                     title={color}
                   />
                 );
               })}
               {(product.colors?.length ?? 0) > 4 && (
-                <div className="w-4 h-4 rounded-full border-2 border-white shadow-sm bg-gray-200 flex items-center justify-center">
-                  <span className="text-[8px] text-gray-600 font-semibold">+{(product.colors?.length ?? 0) - 4}</span>
+                <div className="w-4 h-4 rounded-full border-2 border-background shadow-sm bg-muted flex items-center justify-center">
+                  <span className="text-[8px] text-muted-foreground font-semibold">+{(product.colors?.length ?? 0) - 4}</span>
                 </div>
               )}
             </div>
@@ -137,9 +137,9 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
 
         {/* Notes */}
         {product.notes && (
-          <div className="flex items-start gap-1.5 pt-2 border-t border-gray-100">
-            <AlertCircle className="w-3 h-3 text-blue-500 flex-shrink-0 mt-0.5" />
-            <span className="text-xs text-blue-600 line-clamp-2">{product.notes}</span>
+          <div className="flex items-start gap-1.5 pt-2 border-t border-border">
+            <AlertCircle className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+            <span className="text-xs text-primary line-clamp-2">{product.notes}</span>
           </div>
         )}
       </div>

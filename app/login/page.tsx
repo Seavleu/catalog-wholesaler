@@ -42,20 +42,20 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-3 sm:px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-background px-3 sm:px-4 py-8">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
             ចូលគណនី
           </CardTitle>
-          <p className="text-center text-gray-500 text-sm">
-            អ្នកគ្រប់គ្រង: ប្រើអ៊ីមែល | អ្នកប្រើប្រាស់: ប្រើលេខទូរស័ព្ទ
+          <p className="text-center text-muted-foreground text-sm">
+            អ្នកគ្រប់គ្រង: ប្រើអ៊ីមែល | អ្នកប្រើប្រាស់: ប្រើលេខទូរស័ព្ទ (ឧ. 012345678)
           </p>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleLogin}>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground flex items-center gap-2">
                 {isEmail(identifier) ? (
                   <>
                     <Mail className="w-4 h-4" />
@@ -76,14 +76,14 @@ export default function LoginPage() {
                 required
                 className="h-11 text-base"
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 {isEmail(identifier)
                   ? "ប្រើអ៊ីមែលសម្រាប់អ្នកគ្រប់គ្រង"
                   : "ប្រើលេខទូរស័ព្ទសម្រាប់អ្នកប្រើប្រាស់ (ឧ. 012345678)"}
               </p>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">ពាក្យសម្ងាត់</label>
+              <label className="text-sm font-medium text-foreground">ពាក្យសម្ងាត់</label>
               <Input
                 type="password"
                 value={password}
@@ -95,7 +95,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2 text-destructive text-sm bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
                 <AlertCircle className="w-4 h-4" />
                 <span>{error}</span>
               </div>

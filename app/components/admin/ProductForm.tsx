@@ -286,7 +286,7 @@ export default function ProductForm({
             <Label className="text-sm sm:text-base">រូបភាពគម្រប</Label>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
               {formData.cover_image ? (
-                <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
+                <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-muted">
                   <img
                     src={formData.cover_image}
                     alt="Cover"
@@ -301,7 +301,7 @@ export default function ProductForm({
                   </button>
                 </div>
               ) : (
-                <label className="w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50">
+                <label className="w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-muted">
                   <input
                     type="file"
                     accept="image/jpeg,image/png,.jpg,.jpeg,.png"
@@ -309,9 +309,9 @@ export default function ProductForm({
                     onChange={handleCoverUpload}
                   />
                   {uploading ? (
-                    <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
                   ) : (
-                    <Upload className="w-6 h-6 text-gray-400" />
+                    <Upload className="w-6 h-6 text-muted-foreground" />
                   )}
                 </label>
               )}
@@ -327,14 +327,14 @@ export default function ProductForm({
           {/* Catalog Images */}
           <div className="space-y-2">
             <Label className="text-sm sm:text-base">រូបភាពកាតាឡុក</Label>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               បង្ហោះរូបភាពច្រើនដើម្បីបង្ហាញពណ៌ផ្សេងៗ
             </p>
             <div className="flex gap-2 flex-wrap">
               {formData.catalog_images?.map((img, i) => (
                 <div
                   key={i}
-                  className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100"
+                  className="relative w-20 h-20 rounded-lg overflow-hidden bg-muted"
                 >
                   <img
                     src={img}
@@ -350,7 +350,7 @@ export default function ProductForm({
                   </button>
                 </div>
               ))}
-              <label className="w-20 h-20 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50">
+              <label className="w-20 h-20 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-muted">
                 <input
                   type="file"
                   accept="image/jpeg,image/png,.jpg,.jpeg,.png"
@@ -359,9 +359,9 @@ export default function ProductForm({
                   onChange={handleCatalogUpload}
                 />
                 {uploading ? (
-                  <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+                  <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                 ) : (
-                  <Plus className="w-5 h-5 text-gray-400" />
+                  <Plus className="w-5 h-5 text-muted-foreground" />
                 )}
               </label>
             </div>
@@ -388,8 +388,8 @@ export default function ProductForm({
                   }}
                   className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg border text-sm sm:text-base font-medium transition-colors min-h-[44px] ${
                     formData.sizes?.includes(size)
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-white text-foreground border-border hover:bg-muted"
                   }`}
                 >
                   {size}
@@ -405,7 +405,7 @@ export default function ProductForm({
               {(formData.colors || []).map((color, i) => (
                 <span
                   key={i}
-                  className="px-3 py-2 sm:py-1.5 bg-gray-100 rounded-lg text-sm sm:text-base flex items-center gap-2 min-h-[44px] sm:min-h-0"
+                  className="px-3 py-2 sm:py-1.5 bg-muted rounded-lg text-sm sm:text-base flex items-center gap-2 min-h-[44px] sm:min-h-0"
                 >
                   {color}
                   <button
@@ -418,7 +418,7 @@ export default function ProductForm({
                     }
                     className="p-1 -mr-1"
                   >
-                    <X className="w-4 h-4 text-gray-500 hover:text-red-500" />
+                    <X className="w-4 h-4 text-muted-foreground hover:text-red-500" />
                   </button>
                 </span>
               ))}
@@ -429,7 +429,7 @@ export default function ProductForm({
               />
             </div>
             <div className="mt-3">
-              <Label className="text-sm sm:text-base text-gray-600">
+              <Label className="text-sm sm:text-base text-foreground">
                 ចំនួនពណ៌សរុបដែលមាន (ជម្រើស)
               </Label>
               <Input
@@ -445,7 +445,7 @@ export default function ProductForm({
                 }
                 className="mt-1 h-11 sm:h-10 text-sm sm:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 បញ្ចូលចំនួនពណ៌សរុបប្រសិនបើមានពណ៌ច្រើនជាងរូបភាពដែលបានបង្ហោះ
               </p>
             </div>

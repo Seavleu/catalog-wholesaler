@@ -16,9 +16,9 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 const ROLE_COLORS: Record<string, string> = {
-  admin: "bg-purple-100 text-purple-700",
-  manager: "bg-blue-100 text-blue-700",
-  user: "bg-gray-100 text-gray-700",
+  admin: "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300",
+  manager: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
+  user: "bg-muted text-muted-foreground",
 };
 
 export default function ProfilePage() {
@@ -41,7 +41,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -49,11 +49,11 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-12 text-center">
-        <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+        <User className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+        <h1 className="text-2xl font-semibold text-foreground mb-2">
           មិនមានគណនី
         </h1>
-        <p className="text-gray-600">សូមចូលគណនីដើម្បីមើលព័ត៌មានផ្ទាល់ខ្លួន។</p>
+        <p className="text-muted-foreground">សូមចូលគណនីដើម្បីមើលព័ត៌មានផ្ទាល់ខ្លួន។</p>
       </div>
     );
   }
@@ -61,10 +61,10 @@ export default function ProfilePage() {
   return (
     <div className="max-w-2xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
       <Card className="rounded-2xl shadow-sm">
-        <CardHeader className="border-b bg-gray-50 rounded-t-2xl">
+        <CardHeader className="border-b bg-muted/50 rounded-t-2xl">
           <CardTitle className="text-xl flex items-center gap-3">
-            <div className="p-2 bg-gray-900 rounded-xl">
-              <User className="w-6 h-6 text-white" />
+            <div className="p-2 bg-primary rounded-xl">
+              <User className="w-6 h-6 text-primary-foreground" />
             </div>
             គណនីរបស់ខ្ញុំ
           </CardTitle>
@@ -72,11 +72,11 @@ export default function ProfilePage() {
         <CardContent className="p-6 space-y-6">
           {/* Avatar and Name */}
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
-              <User className="w-10 h-10 text-gray-500" />
+            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center">
+              <User className="w-10 h-10 text-muted-foreground" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-2xl font-bold text-foreground">
                 {user.full_name || "អ្នកប្រើប្រាស់"}
               </h2>
               <Badge className={ROLE_COLORS[user.role || "user"]}>
@@ -88,30 +88,30 @@ export default function ProfilePage() {
           {/* Info Grid */}
           <div className="grid gap-4">
             {user.phone && (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                <Phone className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                <Phone className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-gray-500">លេខទូរស័ព្ទ</p>
-                  <p className="font-medium text-gray-900">{user.phone}</p>
+                  <p className="text-sm text-muted-foreground">លេខទូរស័ព្ទ</p>
+                  <p className="font-medium text-foreground">{user.phone}</p>
                 </div>
               </div>
             )}
 
             {user.email && (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                <Mail className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                <Mail className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-gray-500">អ៊ីមែល</p>
-                  <p className="font-medium text-gray-900">{user.email}</p>
+                  <p className="text-sm text-muted-foreground">អ៊ីមែល</p>
+                  <p className="font-medium text-foreground">{user.email}</p>
                 </div>
               </div>
             )}
 
-            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-              <Shield className="w-5 h-5 text-gray-400" />
+            <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+              <Shield className="w-5 h-5 text-muted-foreground" />
               <div>
-                <p className="text-sm text-gray-500">តួនាទី</p>
-                <p className="font-medium text-gray-900">
+                <p className="text-sm text-muted-foreground">តួនាទី</p>
+                <p className="font-medium text-foreground">
                   {ROLE_LABELS[user.role || "user"]}
                 </p>
               </div>
@@ -119,11 +119,11 @@ export default function ProfilePage() {
           </div>
 
           {/* Actions */}
-          <div className="pt-4 border-t space-y-3">
+          <div className="pt-4 border-t border-border space-y-3">
             {/* Catalog Navigation */}
             <Link href="/catalog" className="block">
               <Button
-                className="w-full h-12 gap-2 bg-gray-900 hover:bg-gray-800 text-white"
+                className="w-full h-12 gap-2"
               >
                 <ShoppingBag className="w-5 h-5" />
                 មើលកាតាឡុកផលិតផល
