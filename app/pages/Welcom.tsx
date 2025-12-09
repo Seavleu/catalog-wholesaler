@@ -7,8 +7,6 @@ import {
   ShoppingBag,
   ArrowRight,
   Package,
-  Star,
-  TrendingUp,
   Phone,
   MapPin,
   Facebook,
@@ -101,32 +99,6 @@ export default function Welcom() {
               </Button>
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="border-t border-gray-200"></div>
-      </div>
-
-      {/* Features - Compact Grid */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        <div className="grid md:grid-cols-3 gap-8 md:gap-10">
-          <FeatureItem
-            icon={<Package className="w-6 h-6" />}
-            title="កាតាឡុកផលិតផល"
-            description="រុករកផលិតផលទាំងអស់ជាមួយនឹងរូបភាពច្បាស់"
-          />
-          <FeatureItem
-            icon={<Star className="w-6 h-6" />}
-            title="ម៉ាកល្បីៗ"
-            description="Nike, Adidas, Under Armour និងច្រើនទៀត"
-          />
-          <FeatureItem
-            icon={<TrendingUp className="w-6 h-6" />}
-            title="គុណភាពខ្ពស់"
-            description="ផលិតផលដែលមានគុណភាពខ្ពស់ និងតម្លៃសមរម្យ"
-          />
         </div>
       </section>
 
@@ -241,22 +213,6 @@ export default function Welcom() {
           />
         </div>
       </section>
-    </div>
-  );
-}
-
-type FeatureItemProps = {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-};
-
-function FeatureItem({ icon, title, description }: FeatureItemProps) {
-  return (
-    <div className="space-y-3">
-      <div className="text-gray-900">{icon}</div>
-      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{title}</h3>
-      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{description}</p>
     </div>
   );
 }
