@@ -5,7 +5,7 @@ import CatalogFilters from "@/app/components/catalog/CatalogFilters";
 import ProductCard from "@/app/components/catalog/ProductCard";
 import QuickViewModal from "@/app/components/catalog/QuickViewModal";
 import { ProductEntity } from "@/lib/types";
-import { Camera, Send, MessageCircle } from "lucide-react";
+import { Camera, Send, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 
 type CatalogClientProps = {
   initialProducts: ProductEntity[];
@@ -18,6 +18,7 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [quickViewProduct, setQuickViewProduct] = useState<ProductEntity | null>(null);
   const [quickViewIndex, setQuickViewIndex] = useState(0);
+  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
 
   const visibleProducts = useMemo(() => {
     return initialProducts.filter((p) => {
@@ -95,33 +96,58 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
           )}
         </header>
 
-        {/* Telegram Instructions Banner */}
-        <div className="bg-primary/10 border border-primary/20 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-            <div className="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 w-full">
+        {/* Telegram Instructions Banner - Toggleable */}
+        <div className="bg-primary/10 border border-primary/20 rounded-lg sm:rounded-xl shadow-sm overflow-hidden">
+          <button
+            onClick={() => setIsInstructionsOpen(!isInstructionsOpen)}
+            className="w-full flex items-center justify-between gap-3 p-3 sm:p-4 hover:bg-primary/5 transition-colors"
+          >
+            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-foreground text-sm sm:text-base mb-1">
+              <div className="flex-1 min-w-0 text-left">
+                <h3 className="font-semibold text-foreground text-sm sm:text-base">
                   ចង់បញ្ជាទិញផលិតផល?
                 </h3>
-                <p className="text-muted-foreground text-xs sm:text-sm">
-                  សូមថតរូបផលិតផលដែលអ្នកចង់បញ្ជាទិញ និងផ្ញើមកកាន់ Telegram របស់យើង
-                </p>
+                {!isInstructionsOpen && (
+                  <p className="text-muted-foreground text-xs sm:text-sm truncate">
+                    សូមថតរូបផលិតផលដែលអ្នកចង់បញ្ជាទិញ និងផ្ញើមកកាន់ Telegram
+                  </p>
+                )}
               </div>
             </div>
-            <a
-              href="https://t.me/your_telegram_username"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>ផ្ញើទៅ Telegram</span>
-              <Send className="w-4 h-4" />
-            </a>
-          </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {isInstructionsOpen ? (
+                <ChevronUp className="w-5 h-5 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-muted-foreground" />
+              )}
+            </div>
+          </button>
+          
+          {isInstructionsOpen && (
+            <div className="px-3 sm:px-4 pb-3 sm:pb-4 md:pb-5 pt-0 border-t border-primary/20">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 pt-3 sm:pt-4">
+                <div className="flex-1 w-full">
+                  <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-0">
+                    សូមថតរូបផលិតផលដែលអ្នកចង់បញ្ជាទិញ និងផ្ញើមកកាន់ Telegram របស់យើង
+                  </p>
+                </div>
+                <a
+                  href="https://t.me/your_telegram_username"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>ផ្ញើទៅ Telegram</span>
+                  <Send className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Filters Section */}
@@ -166,7 +192,7 @@ export default function CatalogClient({ initialProducts, brands }: CatalogClient
             </div>
         </div>
             ) : (
-               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
                  {visibleProducts.map((product) => (
             <ProductCard
               key={product.id}
