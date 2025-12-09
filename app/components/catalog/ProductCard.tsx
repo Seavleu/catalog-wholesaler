@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Package, AlertCircle } from "lucide-react";
+import { Package } from "lucide-react";
 import type { ProductEntity } from "@/lib/types";
 
 type ProductCardProps = {
@@ -76,71 +76,15 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         )}
       </div>
 
-      {/* Content Section */}
-      <div className="p-4 flex-1 flex flex-col space-y-2">
-        {/* Brand and Name */}
-        <div className="flex-1">
-          {product.brand && (
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
-              {product.brand}
-            </p>
-          )}
-          <h3 className="font-semibold text-foreground text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
-            {product.name || 'ផលិតផល'}
-          </h3>
-        </div>
-
-        {/* Color Count */}
+      {/* Content Section - Minimal */}
+      <div className="px-2 py-1.5 space-y-0.5">
+        <h3 className="font-medium text-foreground text-xs leading-tight line-clamp-1 truncate">
+          {product.name || 'ផលិតផល'}
+        </h3>
         {product.color_count && product.color_count > 0 && (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[10px] text-muted-foreground">
             {product.color_count} {product.color_count === 1 ? 'ពណ៌' : 'ពណ៌'}
           </p>
-        )}
-
-        {/* Stock Status and Colors */}
-        <div className="flex items-center justify-between pt-2 border-t border-border">
-          {/* Stock Status Indicator */}
-          <div className="flex items-center gap-1.5">
-            <div className={`w-2 h-2 rounded-full ${stockStatusDisplay.color} flex-shrink-0`} />
-            <span className="text-xs font-medium text-muted-foreground">
-              {stockStatusDisplay.label}
-            </span>
-          </div>
-          
-          {/* Color Swatches */}
-          {(product.colors?.length ?? 0) > 0 && (
-            <div className="flex -space-x-1 flex-shrink-0">
-              {product.colors?.slice(0, 4).map((color, i) => {
-                // Try to parse color as hex/rgb, otherwise use as-is
-                const colorValue = color.toLowerCase().trim();
-                const isValidColor = /^#[0-9A-F]{6}$/i.test(colorValue) || 
-                                   /^rgb\(/i.test(colorValue) || 
-                                   /^[a-z]+$/i.test(colorValue);
-                
-                return (
-                  <div 
-                    key={i}
-                    className="w-4 h-4 rounded-full border-2 border-background shadow-sm"
-                    style={isValidColor ? { backgroundColor: colorValue } : { backgroundColor: '#ccc' }}
-                    title={color}
-                  />
-                );
-              })}
-              {(product.colors?.length ?? 0) > 4 && (
-                <div className="w-4 h-4 rounded-full border-2 border-background shadow-sm bg-muted flex items-center justify-center">
-                  <span className="text-[8px] text-muted-foreground font-semibold">+{(product.colors?.length ?? 0) - 4}</span>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Notes */}
-        {product.notes && (
-          <div className="flex items-start gap-1.5 pt-2 border-t border-border">
-            <AlertCircle className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
-            <span className="text-xs text-primary line-clamp-2">{product.notes}</span>
-          </div>
         )}
       </div>
     </Card>
