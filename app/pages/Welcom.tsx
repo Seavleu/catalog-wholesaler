@@ -26,9 +26,11 @@ export default function Welcom() {
     async function loadFeatured() {
       try {
         const products = await app.entities.Product.list();
+        // Filter active products and limit to exactly 6 for home page display
         const active = products
           .filter((p) => p.is_active !== false)
           .slice(0, 6);
+        // Set exactly 6 products (or fewer if less than 6 available)
         setFeaturedProducts(active);
       } catch (err) {
         console.error("Failed to load products:", err);
@@ -180,7 +182,7 @@ export default function Welcom() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 mb-8">
-              {featuredProducts.map((product) => (
+              {featuredProducts.slice(0, 6).map((product) => (
                 <Link
                   key={product.id}
                   href={`/product-detail?id=${product.id}`}
