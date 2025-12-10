@@ -126,10 +126,10 @@ export default function QuickViewModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl w-[95vw] sm:w-full p-0 overflow-hidden rounded-xl sm:rounded-2xl border-0 shadow-2xl mx-2 sm:mx-0">
-        <div className="flex flex-col md:flex-row">
+      <DialogContent className="max-w-2xl w-[95vw] sm:w-full p-0 overflow-hidden rounded-xl sm:rounded-2xl border-0 shadow-2xl mx-2 sm:mx-0 max-h-[95vh] sm:max-h-[90vh] flex flex-col">
+        <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
           {/* Image Section */}
-          <div className="relative w-full md:w-1/2 aspect-square bg-muted">
+          <div className="relative w-full md:w-1/2 aspect-square md:aspect-auto md:h-full bg-muted flex-shrink-0">
             {product.cover_image ? (
               <img 
                 src={product.cover_image} 
@@ -176,8 +176,8 @@ export default function QuickViewModal({
           </div>
 
           {/* Details Section */}
-          <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col bg-card">
-            <div className="flex-1">
+          <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 flex flex-col bg-card min-h-0 overflow-hidden">
+            <div className="flex-1 overflow-y-auto min-h-0 pr-1 -mr-1" style={{ WebkitOverflowScrolling: 'touch' }}>
               <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">{product.brand}</p>
               <h2 className="text-2xl font-bold text-foreground mt-1 leading-tight">{product.name}</h2>
               
@@ -281,36 +281,39 @@ export default function QuickViewModal({
               )}
             </div>
 
-            {/* Telegram Instructions */}
-            <div className="mt-5 bg-primary/10 border border-primary/20 rounded-lg p-3">
-              <div className="flex items-start gap-2.5">
-                <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Camera className="w-3.5 h-3.5 text-primary-foreground" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs text-muted-foreground mb-2">
-                    ថតរូបផលិតផលនេះ និងផ្ញើមកកាន់ Telegram
-                  </p>
-                  <a
-                    href="https://t.me/your_telegram_username"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md font-medium text-xs transition-colors"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>Telegram</span>
-                    <Send className="w-3.5 h-3.5" />
-                  </a>
+            {/* Fixed Bottom Section */}
+            <div className="flex-shrink-0 pt-4 border-t border-border space-y-3">
+              {/* Telegram Instructions */}
+              <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Camera className="w-3.5 h-3.5 text-primary-foreground" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-muted-foreground mb-2">
+                      ថតរូបផលិតផលនេះ និងផ្ញើមកកាន់ Telegram
+                    </p>
+                    <a
+                      href="https://t.me/your_telegram_username"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md font-medium text-xs transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>Telegram</span>
+                      <Send className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <Link href={`/product-detail?id=${product.id}`} className="block mt-4">
-              <Button className="w-full h-12 text-base font-semibold gap-2">
-                មើលព័ត៌មានលម្អិត
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
+              <Link href={`/product-detail?id=${product.id}`} className="block">
+                <Button className="w-full h-11 sm:h-12 text-sm sm:text-base font-semibold gap-2">
+                  មើលព័ត៌មានលម្អិត
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </DialogContent>
